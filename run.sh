@@ -1,0 +1,1 @@
+bun --watch run index.ts

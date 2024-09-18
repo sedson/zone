@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>zone</title>
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <script type="module" src="./js/main.js" defer></script>
+</head>
+<body class="flex col">
+  <header>
+    <nav>
+      <span>
+        <a href="/#today">01 Today</a>
+      </span>
+      <span>
+        <a href="/#today">02 Search</a>
+      </span>
+    </nav>  
+  </header>
+  
+  <div class="flex fill">
+    <div id="sidebar" class="sidebar">
+      <h1>[S] SIDEBAR</h1>
+      <div id="links"></div>
+    </div>
+    <div id="editor" class="editor">
+      <h1 contenteditable="true" id="editor-title"></h1>
+      <textarea id="editor-text"></textarea>
+    </div>
+  </div>
+</body>
+</html>
