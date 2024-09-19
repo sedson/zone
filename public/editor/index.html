@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>zone</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <script type="module" src="/components/text-editor/text-editor.js"></script>
+  <script type="module" src="/js/main.js" defer></script>
+</head>
+<body class="flex col">
+  <header>
+    <nav>
+      <span>
+        <a href="/">[1] ZONE</a>
+      </span>
+      <span>
+        <a href="/editor" class="active-tab">[2] EDITOR</a>
+      </span>
+    </nav>
+  </header>
+  <div class="flex fill box">
+    <div id="sidebar" class="sidebar">
+      <h1 class="p100 bb">[S] SIDEBAR</h1>
+      <div id="links" class=""></div>
+    </div>
+    <div id="editor" class="editor bl">
+      <h1 contenteditable="true" id="editor-title" class="bb p100"></h1>
+      <!-- <textarea id="editor-text"></textarea> -->
+      <textarea-plus id="editor-text" class="fill"></textarea-plus>
+    </div>
+  </div>
+</body>
+</html>

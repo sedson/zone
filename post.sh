@@ -6,5 +6,5 @@
 
 curl --header "Content-Type: application/json" \
      --request POST \
-     --data '{"title": "val"}' \
+     --data '{"title": "demo"}' \
      http://localhost:8712/notes

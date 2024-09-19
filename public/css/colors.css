@@ -1,0 +1,63 @@
+:root {
+  --dark: #333;
+  --light: #FAFAFA;
+  
+  --gray-1: #5a5a5a;
+  --gray-2: #828282;
+  --gray-3: #aaa;
+  --gray-4: #d2d2d2;
+
+  --yellow: #FCB400;
+  --yellow-bright: #FCB400;
+  --yellow-dark: #B77504;
+  --yellow-light: #FED76E;
+  --yellow-fade: #FEEAB6;
+
+  --orange: #F7653B;
+  --orange-bright: #FE6F2C;
+  --orange-dark: #D74E26;
+  --orange-light: #FFA981;
+  --orange-fade: #FEE2D5;
+
+  --red: #EF3161;
+  --red-bright: #F82B60;
+  --red-dark: #BA1D45;
+  --red-light: #FF9DB7;
+  --red-fade: #FFDCE5;
+
+  --pink: #E929BA;
+  --pink-bright: #FF08C2;
+  --pink-dark: #B2158B;
+  --pink-light: #F99DE2;
+  --pink-fade: #FFDAF6;
+
+  --purple: #7B39ED;
+  --purple-bright: #8B46FF;
+  --purple-dark: #6B1CB0;
+  --purple-light: #CDB0FF;
+  --purple-fade: #EDE3FE;
+
+  --blue: #1283DB;
+  --blue-bright: #2D7FF9;
+  --blue-dark: #2750AE;
+  --blue-light: #9CC7FF;
+  --blue-fade: #CFE0FF;
+
+  --cyan: #01A9DB;
+  --cyan-bright: #18BFFF;
+  --cyan-dark: #0976B7;
+  --cyan-light: #77D1F3;
+  --cyan-fade: #D0F0FD;
+
+  --teal: #05AAA4;
+  --teal-bright: #21D9D2;
+  --teal-dark: #08A09B;
+  --teal-light: #72DEC3;
+  --teal-fade: #C1F5E9;
+
+  --green: #11AF22;
+  --green-bright: #1EC933;
+  --green-dark: #338A16;
+  --green-light: #93E088;
+  --green-fade: #D0F7C3;
+}

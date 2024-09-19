@@ -4,14 +4,16 @@
  */
 
 import { select, tag } from "./dom-utils.js";
+import { TextareaPlus } from "../components/text-editor/text-editor.js";
 import { getFormattedDate, matchFormattedDate, prettyPrintDate } from "./dates.js";
 
 const today = getFormattedDate();
 
-const editor = /** @type {HTMLTextAreaElement} */ (select("#editor-text"));
+const editor = /** @type {TextareaPlus} */ (select("#editor-text"));
 const title = /** @type {HTMLElement} */ (select("#editor-title"));
 
 let noteId = '';
+
 
 /**
  * @param {string} id
@@ -42,7 +44,7 @@ async function hashChange() {
     let note = await fetchNote(id);
     if (note === undefined) return;
 
-    editor.value = note.content ?? '';
+    editor.text = note.content ?? '';
     title.innerText = note.title || prettyPrintDate(note.id);
     if (note.id === today) {
       title.append(tag('span.tag.today', { innerText: 'today' }));
@@ -102,12 +104,29 @@ async function fillSidebar () {
 }
 
 
-select("#editor-text")?.addEventListener('input', (e) => {
+editor.listen(editor.source, 'input', (e) => {
   fetch(`/notes/${noteId}`, {
     method: "PUT",
-    body: JSON.stringify({ content: e.target.value }),
+    body: JSON.stringify({ content: editor.text }),
   });
+})
+
+editor.mapkey("tab", () => editor.indent())
+editor.mapkey("shift+tab", () => editor.indent(true))
+editor.mapkey("meta+'", (e) => {
+  e.preventDefault();
+  const contextMenuEvent = new MouseEvent('contextmenu', {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+    button: 2, 
+  });
+  console.log(contextMenuEvent)
+  // Dispatch the event
+  editor.source.dispatchEvent(contextMenuEvent);
 });
+
+
 
 select("#editor-title")?.addEventListener('input', (e) => {
   let title = e.srcElement?.innerText ?? '';

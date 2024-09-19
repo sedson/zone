@@ -1,7 +1,7 @@
 id: n-u4z4a6px
 title: val.town
 created_at: 2024-09-18T15:19:17.935Z
-updated_at: 2024-09-18T18:50:46.030Z
+updated_at: 2024-09-19T13:45:28.974Z
 ---
 👋 Welcome Seamus! We’re excited to work together and see if there’s a fit. We’ll plan on 9am-5pm for the week.
 
@@ -12,7 +12,8 @@ updated_at: 2024-09-18T18:50:46.030Z
 - you learn and improve throughout the week
 - we all have fun working together and it feels productive
 
-In terms of sharing publicly, we are happy with either you sharing content under your own name and us boosting it or for you to “ghost write” by creating materials for us to share under our names. We don’t have a preference – whatever you’re more comfortable with works for us.
+In terms of sharing publicly, we are happy with either you sharing content under your own name and us boosting it
+ or for you to “ghost write” by creating materials for us to share under our names. We don’t have a preference – whatever you’re more comfortable with works for us.
 
 # To do
 - [ ]  Prep
@@ -33,5 +34,3 @@ In terms of sharing publicly, we are happy with either you sharing content under
 physical materials on a pin board. every hour a cron triggers and a webcam takes a picture of the pin board. run some ocr and push that to a live site.
 
 this would technically require some kind of other service connected to the webcam.
-
-## 

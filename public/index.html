@@ -4,30 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>zone</title>
-  <link rel="stylesheet" type="text/css" href="./css/style.css">
-  <script type="module" src="./js/main.js" defer></script>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
-<body class="flex col">
+<body class="flex col full">
   <header>
     <nav>
       <span>
-        <a href="/#today">01 Today</a>
+        <a href="/" class="active-tab">[1] ZONE</a>
       </span>
       <span>
-        <a href="/#today">02 Search</a>
+        <a href="/editor">[2] EDITOR</a>
       </span>
-    </nav>  
+    </nav>
   </header>
-  
-  <div class="flex fill">
-    <div id="sidebar" class="sidebar">
-      <h1>[S] SIDEBAR</h1>
-      <div id="links"></div>
-    </div>
-    <div id="editor" class="editor">
-      <h1 contenteditable="true" id="editor-title"></h1>
-      <textarea id="editor-text"></textarea>
-    </div>
+  <div class="flex full box">
+    <h1 style="font-size: 10rem;">ZONE</h1>  
   </div>
 </body>
 </html>
