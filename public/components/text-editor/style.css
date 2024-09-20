@@ -119,7 +119,6 @@
 
 .todo {
   & .marker {
-    color: var(--text);
   }
 }
 .todo-done {
@@ -136,4 +135,12 @@
   & > .marker {
     color: var(--red);
   }
+}
+.link-text {
+  color: var(--blue-bright);
+
+  text-decoration: underline;
+}
+.link-url {
+  color: var(--blue-light);
 }

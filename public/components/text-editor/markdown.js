@@ -98,17 +98,26 @@ function span(...classes) {
   return s;
 }
 
+
 /**
  * @param {string} type
- * @param {(MarkdownNode | LeafNode)[]} children
- * @return {MarkdownNode}
+ * @param {(MarkdownNode | LeafNode)[] | string} children
+ * @return {MarkdownNode | LeafNode}
  */
 function wrap(type, children) {
-  return {
-    type,
-    content: children,
-  };
+  if (Array.isArray(children)) {
+    return /** @type {MarkdownNode} */ ({
+      type,
+      content: children,
+    });  
+  } else {
+    return /** @type {LeafNode} */ ({
+      type,
+      content: children,
+    });  
+  }
 }
+
 
 /**
  * Split the input string into lines with ranges
@@ -148,11 +157,88 @@ function parseText(input) {
  * @param {string} text
  * @return {(MarkdownNode | LeafNode)[]}
  */
-function parseInline(text) {
-  return [{
-    type: 'text',
-    content: text,
-  }];
+function parseLinks(text) {
+
+  /** @type {(MarkdownNode | LeafNode)[]} */
+  const children = [];
+
+  let currentText = "";
+  let linkText = "";
+  let linkUrl = "";
+  
+  let state = {
+    inLinkText: false,
+    inLinkUrl: false,
+    spaceOnly: true,
+  }
+
+  for (let i = 0; i < text.length; i++) {
+    let char = text[i];
+
+    if (char === '[' && !state.inLinkText && !state.inLinkUrl) {
+      
+      if (currentText) {
+        if (state.spaceOnly) {
+          children.push(wrap("space", currentText));
+        } else {
+          children.push(wrap("text", currentText));
+        }
+        currentText = ""
+        state.spaceOnly = true;
+      }
+      state.inLinkText = true;
+      linkText += char;
+
+    } else if (char === "]" && state.inLinkText) {
+      
+      state.inLinkText = false;
+      linkText += char;
+
+      if (text[i + 1] === "(") {
+        state.inLinkUrl = true;
+        i++;
+        linkUrl += "(";
+      } else {
+        currentText += linkText;
+        linkText = "";
+      }
+
+    } else if (char === ")" && state.inLinkUrl) {
+      
+      linkUrl += char;
+      state.inLinkUrl = false;
+      children.push(wrap("link-text", linkText), wrap("link-url", linkUrl));
+      linkText = "";
+      linkUrl = "";
+
+    } else if (state.inLinkText) {
+      
+      linkText += char;
+
+    } else if (state.inLinkUrl) {
+
+      linkUrl += char;
+
+    } else {
+
+      currentText += char;
+      if (char !== " ") {
+        state.spaceOnly = false;
+      }
+    }
+  }
+
+  if (currentText) {
+    children.push(wrap("text", currentText));
+  }
+  if (linkText) {
+    children.push(wrap("text", linkText));
+  }
+  if (linkUrl) {
+    children.push(wrap("text", linkUrl));
+  }
+
+  return children;
 }
 
 
@@ -174,7 +260,7 @@ function spaceNode(amt) {
  */
 function parseLine(line) {
   if (line.content.length === 0) {
-    return { type: "empty", content: [] };
+    return wrap("empty", []);
   }
   
   /** @type {(MarkdownNode | LeafNode)[]} */
@@ -195,31 +281,18 @@ function parseLine(line) {
   rest = submarker ? rest.slice(submarker.length + 1) : rest;
 
   /** @type {(MarkdownNode | LeafNode)[]} */
-  let body = parseInline(rest);
+  let body = parseLinks(rest);
 
   if (subtype) {
-    body = [{
-      type: subtype,
-      content: [{
-        type: "marker", 
-        content: submarker,
-      }, spaceNode(1), ...body],
-    }];
+    body = [wrap(subtype, [wrap("marker", submarker), spaceNode(1), ...body])];
   }
 
   if (type) {
-    children.push({
-      type: "marker",
-      content: marker,
-    }, spaceNode(1));
+    children.push(wrap("marker", marker), spaceNode(1));
   }
-  
-  children.push(...body);
 
-  return {
-    type: type ?? "paragraph",
-    content: children,
-  };
+  children.push(...body);
+  return wrap(type ?? "paragraph", children);
 }
 
 
@@ -290,13 +363,3 @@ function highlightOffline(sourceString) {
   return JSON.stringify(out, null, 2);
 }
 
-const testString1 = "# this is an h1!";
-const testString2 = "this is an paragraph!";
-const testString3 = "- this is an list-item!";
-const testString4 = "- [ ] this is an list-item with a todo";
-const testString5 = "[ ] this is an list-item with a todo";
-
-
-
-
-console.log(highlightOffline(testString5));
