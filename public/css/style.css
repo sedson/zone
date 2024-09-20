@@ -19,7 +19,7 @@
   padding: 0;
   box-sizing: border-box;
   font-size: 1rem;
-  line-height: 1.4em;
+  line-height: 1.5em;
   font-weight: normal;
 }
 
@@ -112,7 +112,6 @@ textarea {
   border: none;
   padding: 1em;
   overflow: scroll;
-  line-height: 1.3em;
   color: unset;
   caret-color: var(--text);
   caret-shape: bar;

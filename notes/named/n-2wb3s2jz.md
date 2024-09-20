@@ -1,14 +1,12 @@
 id: n-2wb3s2jz
 title: lists
 created_at: 2024-09-19T19:50:24.038Z
-updated_at: 2024-09-19T23:53:19.854Z
+updated_at: 2024-09-20T19:54:06.560Z
 ---
 # list of things to watch/read/look into
 
 # books
-
 ## World beyond your head - Matthew B. Crawford
-
 ## Shop class is soul craft - Matthew B. Crawford
 
 # comics

@@ -1,7 +1,7 @@
 id: n-u4z4a6px
 title: val.town
 created_at: 2024-09-18T15:19:17.935Z
-updated_at: 2024-09-20T15:23:53.201Z
+updated_at: 2024-09-20T18:09:41.257Z
 ---
 👋 Welcome Seamus! We’re excited to work together and see if there’s a fit. We’ll plan on 9am-5pm for the week.
 

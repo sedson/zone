@@ -38,12 +38,12 @@ import { nextNonSpaceChar, fillString } from "./string-tools.js";
  * @type {Map<string, string>}
  */
 const lineTypes = new Map(Object.entries({
-  "#" : "h1",
-  "##" : "h2",
-  "###" : "h3",
-  "####" : "h4",
-  "#####" : "h5",
-  "######" : "h6",
+  "#": "h1",
+  "##": "h2",
+  "###": "h3",
+  "####": "h4",
+  "#####": "h5",
+  "######": "h6",
   "-": "list-item",
   "+": "list-item",
 }));
@@ -125,7 +125,6 @@ function wrap(type, children) {
  * @return {Line[]} a list of lines
  */
 function parseText(input) {
-  console.log(input.length)
   const lines = [];
   let lineStart = 0;
   while (lineStart < input.length) {
@@ -151,6 +150,186 @@ function parseText(input) {
   }
   return lines;
 }
+
+/** 
+ * @param {string} text
+ * @return {(MarkdownNode | LeafNode)[]}
+ */
+function parseInline(text) {
+  let nodes = parseLinks(text);
+  return nodes.flatMap(node => {
+    if (node.type !== "text") {
+      return [node];
+    }
+    node = /** @type {LeafNode} */ (node);
+    return parseTextNode(node);
+  });
+}
+
+
+/**
+ * @param {string} text
+ * @return {(MarkdownNode | LeafNode)[]}
+ */
+function parseCode(text) {
+  /** @type {(MarkdownNode | LeafNode)[]} */
+  const children = [];
+  let currentText = "";
+  let inCode = false;
+
+  for (let i = 0; i < text.length; ++i) {
+    const char = text[i];
+    if (char === "`") {
+      if (inCode) {
+        if (currentText) {
+          children.push(wrap("code", [wrap("text", currentText + "`")]));  
+        }
+        inCode = false;
+        currentText = "";
+      } else {
+        if (currentText) {
+          children.push(wrap("text", currentText))  
+        }
+        inCode = true;
+        currentText = "`";
+      }
+
+    } else {
+      currentText += char;
+    }
+  }
+
+  if (currentText.length) {
+    children.push(wrap("text", currentText));
+  }
+  return children;
+}
+
+
+/**
+ * @param {string} text
+ * @return {(MarkdownNode | LeafNode)[]}
+ */
+function parseRefs(text) {
+  /** @type {(MarkdownNode | LeafNode)[]} */
+  const children = [];
+  let currentText = "";
+  let inRef = false;
+
+  for (let i = 0; i < text.length; ++i) {
+    const char = text[i];
+    if (char === "{" && !inRef) {
+      if (currentText) {
+        children.push(wrap("text", currentText))  
+      } 
+      inRef = true;
+      currentText = "{";
+    } else if (char === "}" && inRef) {
+      if (currentText) {
+        children.push(wrap("ref", [wrap("text", currentText + "}")]));
+      }
+      inRef = false;
+      currentText = "";
+    } else {
+      currentText += char;
+    }
+  }
+
+  if (currentText.length) {
+    children.push(wrap("text", currentText));
+  }
+  return children;
+}
+
+
+/**
+ * @param {string} text
+ * TODO: this is pretty buggy but passable when bold and italic do not overlap.
+ */
+function parseBoldItalic(text) {
+  /** @type {(MarkdownNode | LeafNode)[]} */
+  const children = [];
+  let currentText = "";
+  let bold = false;
+  let italic = false;
+
+  for (let i = 0; i < text.length; ++i) {
+    const char = text[i];
+    if (char === "*") {
+      
+      if (text[i + 1] === "*") {
+        // bold 
+        if (bold) {
+          if (currentText) {
+            children.push(wrap("bold", [wrap("text", currentText + "**")]));
+          }
+          bold = false;
+          currentText = "";
+          i++;
+        } else {
+          if (currentText) {
+            children.push(wrap("text", currentText));
+          }
+          bold = true;
+          currentText = "**";
+          i++;
+        }
+      } else {
+        // italic
+        if (italic) {
+          if (currentText) {
+            children.push(wrap("italic", [wrap("text", currentText + "*")]));
+          }
+          italic = false;
+          currentText = "";
+        } else {
+          if (currentText) {
+            children.push(wrap("text", currentText));
+          }
+          italic = true;
+          currentText = "*";
+        }
+      }
+    } else {
+      currentText += char;
+    }
+  }
+  
+  if (currentText) {
+    children.push(wrap("text", currentText));
+  }
+  return children;
+}
+
+
+/**
+ * @param {LeafNode} node
+ * @return {(MarkdownNode | LeafNode)[]}
+ */
+function parseTextNode(node) {
+  const text = node.content;
+  
+  let result = parseCode(text);
+  
+  result = result.flatMap(n => {
+    if (n.type === "text") {
+      n = /** @type {!LeafNode} */ (n);
+      return parseRefs(n.content);
+    }
+    return [n];
+  });
+  
+  result = result.flatMap(n => {
+    if (n.type === "text") {
+      n = /** @type {!LeafNode} */ (n);
+      return parseBoldItalic(n.content);
+    }
+    return [n];
+  });
+
+  return result;
+}
+
 
 
 /** 
@@ -254,9 +433,10 @@ function spaceNode(amt) {
 }
 
 
-/** 
+/**
+ * Parse a single line into markdown.
  * @param {Line} line
- * @return {MarkdownNode | LeafNode} [description]
+ * @return {MarkdownNode | LeafNode}
  */
 function parseLine(line) {
   if (line.content.length === 0) {
@@ -266,22 +446,22 @@ function parseLine(line) {
   /** @type {(MarkdownNode | LeafNode)[]} */
   const children = [];
 
-  let [ leadingSpace ] = nextNonSpaceChar(line.content, 0);
+  let [leadingSpace] = nextNonSpaceChar(line.content, 0);
 
   if (leadingSpace > 0) {
     children.push(spaceNode(leadingSpace));
   }
 
   let rest = line.content.slice(leadingSpace);
-  const [ type, marker ] = getLineType(rest) || [ null, null ];
+  const [type, marker] = getLineType(rest) || [null, null];
 
   rest = marker ? rest.slice(marker.length + 1) : rest;
-  const [ subtype, submarker] = getLineSubtype(rest) || [ null, null ];
+  const [subtype, submarker] = getLineSubtype(rest) || [null, null];
 
   rest = submarker ? rest.slice(submarker.length + 1) : rest;
 
   /** @type {(MarkdownNode | LeafNode)[]} */
-  let body = parseLinks(rest);
+  let body = parseInline(rest);
 
   if (subtype) {
     body = [wrap(subtype, [wrap("marker", submarker), spaceNode(1), ...body])];
@@ -310,14 +490,15 @@ function renderNode(node) {
   elem.append(...node.content.map(renderNode));
   return elem;
 }
-  
+
+
 /**
  * [highlight description]
  * @param {string} sourceString
  * @return {HTMLSpanElement[]}
  */
 export function highlight(sourceString) {
-
+  // console.time('highlight');
   const lines = parseText(sourceString);
   const nodes = lines.map(parseLine);
   
@@ -336,30 +517,6 @@ export function highlight(sourceString) {
 
     highlighted.push(elem)
   }
+  // console.timeEnd('highlight');
   return highlighted;
 }
-
-/**
- * @param { MarkdownNode | LeafNode } node
- * @return {[string, (string | any[])]}
- */
-function renderNodeOffline(node) {
-  if (typeof node.content === "string") {
-    return [node.type, node.content];
-  }
-  return [node.type, node.content.map(renderNodeOffline)];
-}
-
-/**
- * @param {string} sourceString
- */
-function highlightOffline(sourceString) {
-  const lines = parseText(sourceString);
-  const nodes = lines.map(parseLine);
-  let out = [];
-  for (let node of nodes) {
-    out.push(renderNodeOffline(node));
-  }
-  return JSON.stringify(out, null, 2);
-}
-
