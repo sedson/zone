@@ -1,14 +1,17 @@
 @import url(./colors.css);
-
 @font-face {
-  font-family: JetBrains;
-  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-family: iAWriter;
+  src: url('/fonts/iAWriterDuoS-Regular.woff2') format('woff2');
 }
-
 @font-face {
-  font-family: JetBrains;
+  font-family: iAWriter;
   font-style: italic;
-  src: url('/fonts/JetBrainsMono-Italic.woff2') format('woff2');
+  src: url('/fonts/iAWriterDuoS-Italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: iAWriter;
+  font-weight: bold;
+  src: url('/fonts/iAWriterDuoS-Bold.woff2') format('woff2');
 }
 
 * {
@@ -21,21 +24,26 @@
 }
 
 :root {
-  font-family: JetBrains, Monaco, monospace;
+  font-family: iAWriter, Monaco, monospace;
+
   font-size: 13px;
   line-height: 1.4em;
   height: 100vh;
   
   --background: var(--light);
   --text: var(--dark);
-
   --line: rgb(from var(--text) r g b / 0.5);
   --bg25: rgb(from var(--text) r g b / 0.25);
   --bg50: rgb(from var(--text) r g b / 0.5);
   --bg10: rgb(from var(--text) r g b / 0.1);
 }
-
-@media (prefers-color-scheme: dark) {}
+/* 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111;
+    --text:  #888;
+  }
+} */
 
 *:focus {
   outline: none;
@@ -58,6 +66,17 @@ body {
   color: var(--text);
   height: 100%;
   padding: 2rem;
+  padding-top: 1rem;
+}
+
+button {
+  border: none;
+  background: var(--teal-fade);
+  color: var(--teal-dark);
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-family: unset;
+  text-align: left;
 }
 
 .fill {
@@ -82,6 +101,7 @@ a { color: unset; }
 .p50 {padding: 0.5rem;}
 .p25 {padding: 0.25rem;}
 .p10 {padding: 0.1rem;}
+.ch100 {max-width: 100ch;}
 
 textarea {
   background: none;
@@ -114,17 +134,24 @@ textarea {
   height: 100%;
   width: calc(100% / 3);
   max-width: 30ch;
+  position: relative;
   & li {
     list-style: none;
   }
   & h2 {
-    background: var(--bg10);
+    border-bottom: 1px solid var(--line);
   }
   a + h2 {
+    border-top: 1px solid var(--line);
     margin-top: 1rem;
   }
   #links * {
     padding: 0rem 1rem;
+  }
+  #new {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }
 
@@ -141,16 +168,13 @@ textarea {
 }
 
 .tag {
-  background: var(--pink-fade);
-  color: var(--pink-dark);
+  background: var(--yellow-fade);
+  color: var(--yellow-dark);
   margin: 0.5em;
 }
 
-.selected {
-  background: var(--purple-light);
-  color: var(--purple-dark);
+.selected, .active-tab {
+  background: var(--green-fade);
+  color: var(--green-dark);
 }
-.active-tab {
-  background: var(--blue-fade);
-  color: var(--blue-dark);
-}
+

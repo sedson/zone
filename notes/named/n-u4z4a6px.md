@@ -1,7 +1,7 @@
 id: n-u4z4a6px
 title: val.town
 created_at: 2024-09-18T15:19:17.935Z
-updated_at: 2024-09-19T13:45:28.974Z
+updated_at: 2024-09-20T14:59:00.513Z
 ---
 👋 Welcome Seamus! We’re excited to work together and see if there’s a fit. We’ll plan on 9am-5pm for the week.
 
@@ -12,15 +12,15 @@ updated_at: 2024-09-19T13:45:28.974Z
 - you learn and improve throughout the week
 - we all have fun working together and it feels productive
 
-In terms of sharing publicly, we are happy with either you sharing content under your own name and us boosting it
- or for you to “ghost write” by creating materials for us to share under our names. We don’t have a preference – whatever you’re more comfortable with works for us.
+In terms of sharing publicly, we are happy with either you sharing content under your own name and us boosting it or for you to “ghost write” by creating materials for us to share under our names. We don’t have a preference – whatever you’re more comfortable with works for us.
 
 # To do
+
 - [ ]  Prep
     - [.]  Read about [Linear work trials](https://linear.app/blog/why-and-how-we-do-work-trials-at-linear)
     - [x]  Sign the contractor agreement and email to [steve@val.town](mailto:steve@val.town)
 - [ ]  During the week
-    - [ ]  Discuss project ideas with Steve
+    - [ ]  Discuss projectxideas with Steve
     - [ ]  Do support in Discord, Twitter
     - [ ]  Write docs, a guide, or a blog
     - [ ]  Chat with a user
@@ -29,8 +29,17 @@ In terms of sharing publicly, we are happy with either you sharing content under
 
 # project ideas
 
-## update every hour physical website. 
+## update every hour physical website.
 
 physical materials on a pin board. every hour a cron triggers and a webcam takes a picture of the pin board. run some ocr and push that to a live site.
 
 this would technically require some kind of other service connected to the webcam.
+
+## codepen with val.town
+
+some kind of edit some code -> save -> share experience. probably not a full html, css, js kind of thing but maybe like some kind of dsl. this is also like shader toy or similar. do you 100% need accounts for this?
+
+## bumper sticker
+
+guy dupont's bumper the sticker is so cool.
+  - [ ] re-watch the video to remind myself of why a val was needed

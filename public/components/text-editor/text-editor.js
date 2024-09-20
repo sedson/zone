@@ -28,7 +28,7 @@ const markup = `
   <div class="display-text"></div>
   <div class="scroll-filler"></div>
 </div>
-<textarea class="source" spellcheck="false"></textarea>
+<textarea class="source" spellcheck="true"></textarea>
 <div class="log"></div>
 `.trim();
 

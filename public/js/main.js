@@ -143,6 +143,23 @@ select("#editor-title")?.addEventListener('input', (e) => {
 });
 
 
+select("#new")?.addEventListener("click", async () => {
+  const res = await fetch("/notes", {
+    method: "POST",
+    body: JSON.stringify({ title: 'New Note' })
+  });
+  if (!res.ok) return;
+  const note = await res.json();
+
+  select("#links")?.append(tag("a.note-link", {
+    innerText: note.title,
+    dataset: { id: note.id },
+    href: `#${note.id}`,
+  }));
+
+  window.location.hash = note.id;
+});
+
 
 window.addEventListener('hashchange', hashChange);
 

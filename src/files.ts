@@ -18,13 +18,9 @@ export interface NoteSummary {
   created_at: string
 }
 
-const dailyTemplate = `
-# todo 
+const dailyTemplate = `# todo 
 
-
-#links
-
-
+# links
 
 `.trim();
 
@@ -40,11 +36,16 @@ function idToPath(id:string):string {
   return join(DIRS.named, id + ".md");
 }
 
+function noteSortUpdate(a: Note, b: Note) {
+  return new Date(a.updated_at) < new Date(b.updated_at) ? 1 : -1;
+}
+
+function noteSortCreate(a: Note, b: Note, ) {
+  return new Date(a.created_at) < new Date(b.created_at) ? 1 : -1;
+}
+
 
 export class Files {
-  /**
-   * [init description]
-   */
   static async init(path: string) {
     DIRS.daily= join(path, "daily");
     DIRS.named= join(path, "named");
@@ -54,9 +55,7 @@ export class Files {
     ]);
   }
 
-
   /**
-   * [create description]
    * @param {Partial<Note>} note [description]
    * @param {boolean} write [description]
    * @return {Promise<Note>} [description]
@@ -77,7 +76,9 @@ export class Files {
       n.title = note.title;
       n.id = randomId();
     } else {
-      if (!note.content) note.content = dailyTemplate;
+      if (note.content === "") {
+        note.content = dailyTemplate;
+      }
     }
 
     const file = note.title ? join(DIRS.named, n.id + ".md") : join(DIRS.daily, n.id + ".md");
@@ -90,7 +91,6 @@ export class Files {
 
 
   /**
-   * [load description]
    * @param {string} path
    * @return {Promise<Note>}
    */
@@ -109,14 +109,16 @@ export class Files {
     return note;
   }
 
-  static async allInDir(dir: string): Promise<NoteSummary[]> {
+  static async allInDir(dir: string, update: boolean = true): Promise<NoteSummary[]> {
     const list = (await readdir(dir)).filter(f => !f.startsWith("."));
     const notes = await Promise.all(list.map(f => {
       const id = f.slice(0, f.indexOf("."));
       return Files.load(idToPath(id));
     }));
 
-    return notes.filter(note => note !== undefined)
+    return notes
+      .filter(note => note !== undefined)
+      .sort(update ? noteSortUpdate : noteSortCreate)
       .map(note => ({
         title: note.title,
         id: note.id
@@ -124,11 +126,13 @@ export class Files {
   }
 
   static async allDaily(): Promise<NoteSummary[]> {
-    return Files.allInDir(DIRS.daily);
+    // Default sort by id works for the daily notes with their ids.
+    return Files.allInDir(DIRS.daily, false);
   }
 
   static async allNamed(): Promise<NoteSummary[]> {
-    return Files.allInDir(DIRS.named);
+    // Sort named notes by update time.
+    return Files.allInDir(DIRS.named, true);
   }
 
   static async getById (id: string): Promise<Note | undefined> {
