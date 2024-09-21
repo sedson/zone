@@ -79,7 +79,6 @@ export async function server({ pub, notes }: ServerConfig): Promise<Server> {
       if (id) {
         // GET /nodes/:id 
         if (method === "GET") {
-          console.log(id)
           return json(await Files.getById(id) ?? {});
         }
 

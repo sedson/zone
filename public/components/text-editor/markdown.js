@@ -35,6 +35,12 @@ import { nextNonSpaceChar, fillString } from "./string-tools.js";
  */
 
 /**
+ * @typedef {Object} Meta
+ * @prop {Record<string, string>?} links
+ */
+
+
+/**
  * @type {Map<string, string>}
  */
 const lineTypes = new Map(Object.entries({
@@ -153,10 +159,11 @@ function parseText(input) {
 
 /** 
  * @param {string} text
+ * @param {Meta} meta
  * @return {(MarkdownNode | LeafNode)[]}
  */
-function parseInline(text) {
-  let nodes = parseLinks(text);
+function parseInline(text, meta) {
+  let nodes = parseLinks(text, meta);
   return nodes.flatMap(node => {
     if (node.type !== "text") {
       return [node];
@@ -334,9 +341,10 @@ function parseTextNode(node) {
 
 /** 
  * @param {string} text
+ * @param {Meta} meta
  * @return {(MarkdownNode | LeafNode)[]}
  */
-function parseLinks(text) {
+function parseLinks(text, meta) {
 
   /** @type {(MarkdownNode | LeafNode)[]} */
   const children = [];
@@ -387,6 +395,10 @@ function parseLinks(text) {
       linkUrl += char;
       state.inLinkUrl = false;
       children.push(wrap("link-text", linkText), wrap("link-url", linkUrl));
+
+      meta.links = meta.links ?? {};
+      meta.links[linkUrl] = linkText;
+
       linkText = "";
       linkUrl = "";
 
@@ -436,9 +448,10 @@ function spaceNode(amt) {
 /**
  * Parse a single line into markdown.
  * @param {Line} line
+ * @param {Meta} meta
  * @return {MarkdownNode | LeafNode}
  */
-function parseLine(line) {
+function parseLine(line, meta) {
   if (line.content.length === 0) {
     return wrap("empty", []);
   }
@@ -461,7 +474,7 @@ function parseLine(line) {
   rest = submarker ? rest.slice(submarker.length + 1) : rest;
 
   /** @type {(MarkdownNode | LeafNode)[]} */
-  let body = parseInline(rest);
+  let body = parseInline(rest, meta);
 
   if (subtype) {
     body = [wrap(subtype, [wrap("marker", submarker), spaceNode(1), ...body])];
@@ -495,12 +508,13 @@ function renderNode(node) {
 /**
  * [highlight description]
  * @param {string} sourceString
+ * @param {Meta} meta
  * @return {HTMLSpanElement[]}
  */
-export function highlight(sourceString) {
+export function highlight(sourceString, meta = { links: {} }) {
   // console.time('highlight');
   const lines = parseText(sourceString);
-  const nodes = lines.map(parseLine);
+  const nodes = lines.map(l => parseLine(l, meta));
   
   let highlighted = [];
 

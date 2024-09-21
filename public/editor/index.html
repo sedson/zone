@@ -22,14 +22,20 @@
   <div class="flex fill box">
     <div id="sidebar" class="sidebar">
       <h1 class="p50 bb">[S] SIDEBAR</h1>
-      <div id="links" class=""></div>
+      <div id="links" class="">
+      </div>
       <button id="new" class="bt">[N] NEW NOTE</button>
     </div>
     <div id="editor" class="editor bl">
       <h1 contenteditable="true" id="editor-title" class="bb p50"></h1>
-
-      <!-- <textarea id="editor-text"></textarea> -->
-      <textarea-plus id="editor-text" class="fill ch100 br"></textarea-plus>
+      <textarea-plus id="editor-text" class="fill"></textarea-plus>
+    </div>
+    <div id="meta" class="bl meta">
+      <h1 class="bb p50">Meta</h1>
+      <h2>links</h2>
+      <div id="meta-links"></div>
+      <h2>refs</h2>
+      <div id="meta-refs"></div>
     </div>
   </div>
 </body>

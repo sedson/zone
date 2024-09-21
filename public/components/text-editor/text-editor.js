@@ -91,6 +91,10 @@ export class TextareaPlus extends CustomComponent {
      * @type {Token[]}
      */
     this.tokens = [];
+
+    this.meta = {
+      links: {},
+    };
   }
 
 
@@ -236,7 +240,8 @@ export class TextareaPlus extends CustomComponent {
 
 
   update() {
-    const highlighted = markdown.highlight(this.text, dictionary); 
+    this.meta.links = {};
+    const highlighted = markdown.highlight(this.text, this.meta); 
     this.setHighlight(highlighted)
     this.updateCaret();
   }

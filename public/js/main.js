@@ -11,6 +11,8 @@ const today = getFormattedDate();
 
 const editor = /** @type {TextareaPlus} */ (select("#editor-text"));
 const title = /** @type {HTMLElement} */ (select("#editor-title"));
+const meta = /** @type {HTMLElement} */ (select("#meta"));
+
 
 let noteId = '';
 
@@ -43,6 +45,24 @@ async function hashChange() {
   if (id) {
     let note = await fetchNote(id);
     if (note === undefined) return;
+    if (!note.id) {
+
+      // failed to fetch make a note for today.
+      if (id === today) {
+        const res = await fetch("/notes", {
+          method: "POST",
+          body: JSON.stringify({ id: today })
+        });
+        window.location.reload();
+        return;
+      }
+
+      editor.text = `note ${id} not found : (`;
+      title.contentEditable = "false";
+      title.innerText = "error";
+      noteId = "";
+      return;
+    }
 
     editor.text = note.content ?? '';
     title.innerText = note.title || prettyPrintDate(note.id);
@@ -58,14 +78,16 @@ async function hashChange() {
     }
 
     const root = document.querySelector(':root');
-    root?.style?.setProperty('--active', id)
 
     document.querySelectorAll(".note-link")?.forEach(e => {
       e.classList.remove('selected');
     });
 
     select(`.note-link[data-id="${noteId}"`)?.classList.add('selected');
+
+    buildMetaView();
   }
+
 
 
 }
@@ -105,11 +127,15 @@ async function fillSidebar () {
 
 
 editor.listen(editor.source, 'input', (e) => {
-  fetch(`/notes/${noteId}`, {
-    method: "PUT",
-    body: JSON.stringify({ content: editor.text }),
-  });
-})
+  if (noteId) {
+    fetch(`/notes/${noteId}`, {
+      method: "PUT",
+      body: JSON.stringify({ content: editor.text }),
+    });  
+  }
+  
+  buildMetaView();
+});
 
 editor.mapkey("tab", () => editor.indent())
 editor.mapkey("shift+tab", () => editor.indent(true))
@@ -121,7 +147,7 @@ editor.mapkey("meta+'", (e) => {
     view: window,
     button: 2, 
   });
-  console.log(contextMenuEvent)
+  console.log(contextMenuEvent);
   // Dispatch the event
   editor.source.dispatchEvent(contextMenuEvent);
 });
@@ -159,6 +185,26 @@ select("#new")?.addEventListener("click", async () => {
 
   window.location.hash = note.id;
 });
+
+
+
+function buildMetaView() {
+  const linkArea = meta.querySelector("#meta-links");
+  if (linkArea === null) return;
+  linkArea.innerHTML = "";
+  
+  for (let [url, text] of Object.entries(editor.meta.links)) {
+    const link = tag("a.link-card", {
+      href: url.slice(1, -1),
+      target: "_blank",
+    });
+    const linkDiv = tag("div", {
+      innerText: text.slice(1, -1),
+    });
+    link.append(linkDiv);
+    linkArea.append(link);
+  }
+}
 
 
 window.addEventListener('hashchange', hashChange);

@@ -89,16 +89,11 @@ export class Files {
     return n;
   }
 
-
-  /**
-   * @param {string} path
-   * @return {Promise<Note>}
-   */
   static async load(path: string): Promise<Note|undefined> {
     const file = Bun.file(path);
     
     if (!await file.exists()) {
-      return Files.create({});
+      return undefined;
     }
 
     const { mtime } = await stat(path);
