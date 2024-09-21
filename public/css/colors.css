@@ -1,63 +1,53 @@
 :root {
-  --dark: #333;
-  --light: #FAFAFA;
+  --page: linen;
   
-  --gray-1: #5a5a5a;
-  --gray-2: #828282;
-  --gray-3: #aaa;
-  --gray-4: #d2d2d2;
+  --gray-1: #333;
+  --gray-2: color-mix(in srgb, var(--gray-1) 65%, var(--page) 35%);
+  --gray-3: color-mix(in srgb, var(--gray-1) 35%, var(--page) 65%);
+  --gray-4: color-mix(in srgb, var(--gray-1) 10%, var(--page) 90%);
 
-  --yellow: #FCB400;
-  --yellow-bright: #FCB400;
-  --yellow-dark: #B77504;
-  --yellow-light: #FED76E;
-  --yellow-fade: #FEEAB6;
+  --yellow-1: #FCB400;
+  --yellow-2: color-mix(in srgb, var(--yellow-1) 65%, var(--page) 35%);
+  --yellow-3: color-mix(in srgb, var(--yellow-1) 35%, var(--page) 65%);
+  --yellow-4: color-mix(in srgb, var(--yellow-1) 10%, var(--page) 90%);
+  
+  --orange-1: #F7653B;
+  --orange-2: color-mix(in srgb, var(--orange-1) 65%, var(--page) 35%);
+  --orange-3: color-mix(in srgb, var(--orange-1) 35%, var(--page) 65%);
+  --orange-4: color-mix(in srgb, var(--orange-1) 10%, var(--page) 90%);
 
-  --orange: #F7653B;
-  --orange-bright: #FE6F2C;
-  --orange-dark: #D74E26;
-  --orange-light: #FFA981;
-  --orange-fade: #FEE2D5;
+  --red-1: #EF3161;
+  --red-2: color-mix(in srgb, var(--red-1) 65%, var(--page) 35%);
+  --red-3: color-mix(in srgb, var(--red-1) 35%, var(--page) 65%);
+  --red-4: color-mix(in srgb, var(--red-1) 10%, var(--page) 90%);
 
-  --red: #EF3161;
-  --red-bright: #F82B60;
-  --red-dark: #BA1D45;
-  --red-light: #FF9DB7;
-  --red-fade: #FFDCE5;
+  --pink-1: #E929BA;
+  --pink-2: color-mix(in srgb, var(--pink-1) 65%, var(--page) 35%);
+  --pink-3: color-mix(in srgb, var(--pink-1) 35%, var(--page) 65%);
+  --pink-4: color-mix(in srgb, var(--pink-1) 10%, var(--page) 90%);
 
-  --pink: #E929BA;
-  --pink-bright: #FF08C2;
-  --pink-dark: #B2158B;
-  --pink-light: #F99DE2;
-  --pink-fade: #FFDAF6;
+  --purple-1: #7B39ED;
+  --purple-2: color-mix(in srgb, var(--purple-1) 65%, var(--page) 35%);
+  --purple-3: color-mix(in srgb, var(--purple-1) 35%, var(--page) 65%);
+  --purple-4: color-mix(in srgb, var(--purple-1) 10%, var(--page) 90%);
+  
+  --blue-1: #1283DB;
+  --blue-2: color-mix(in srgb, var(--blue-1) 65%, var(--page) 35%);
+  --blue-3: color-mix(in srgb, var(--blue-1) 35%, var(--page) 65%);
+  --blue-4: color-mix(in srgb, var(--blue-1) 10%, var(--page) 90%);
+  
+  --teal-1: #05AAA4;
+  --teal-2: color-mix(in srgb, var(--teal-1) 65%, var(--page) 35%);
+  --teal-3: color-mix(in srgb, var(--teal-1) 35%, var(--page) 65%);
+  --teal-4: color-mix(in srgb, var(--teal-1) 10%, var(--page) 90%);
 
-  --purple: #7B39ED;
-  --purple-bright: #8B46FF;
-  --purple-dark: #6B1CB0;
-  --purple-light: #CDB0FF;
-  --purple-fade: #EDE3FE;
-
-  --blue: #1283DB;
-  --blue-bright: #2D7FF9;
-  --blue-dark: #2750AE;
-  --blue-light: #9CC7FF;
-  --blue-fade: #CFE0FF;
-
-  --cyan: #01A9DB;
-  --cyan-bright: #18BFFF;
-  --cyan-dark: #0976B7;
-  --cyan-light: #77D1F3;
-  --cyan-fade: #D0F0FD;
-
-  --teal: #05AAA4;
-  --teal-bright: #21D9D2;
-  --teal-dark: #08A09B;
-  --teal-light: #72DEC3;
-  --teal-fade: #C1F5E9;
-
-  --green: #11AF22;
-  --green-bright: #1EC933;
-  --green-dark: #338A16;
-  --green-light: #93E088;
-  --green-fade: #D0F7C3;
+  --cyan-1: #01A9DB;
+  --cyan-2: color-mix(in srgb, var(--cyan-1) 65%, var(--page) 35%);
+  --cyan-3: color-mix(in srgb, var(--cyan-1) 35%, var(--page) 65%);
+  --cyan-4: color-mix(in srgb, var(--cyan-1) 10%, var(--page) 90%);
+  
+  --green-1: #11AF22;
+  --green-2: color-mix(in srgb, var(--green-1) 65%, var(--page) 35%);
+  --green-3: color-mix(in srgb, var(--green-1) 35%, var(--page) 65%);
+  --green-4: color-mix(in srgb, var(--green-1) 10%, var(--page) 90%);
 }

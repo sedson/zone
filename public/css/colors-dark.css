@@ -1,0 +1,6 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: hsl(from #02040A h 10% calc(l + 7));
+    --gray-1: #ccc;
+  }
+}

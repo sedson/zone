@@ -1,9 +1,9 @@
 id: n-u4z4a6px
 title: val.town
 created_at: 2024-09-18T15:19:17.935Z
-updated_at: 2024-09-20T23:40:33.675Z
+updated_at: 2024-09-21T16:30:29.307Z
 ---
-[steve's notion doc](https://www.notion.so/val-town/Seamus-Edson-Work-Trial-665268ac30a944a496455c00b2a1975a)
+[Steve's notion doc](https://www.notion.so/val-town/Seamus-Edson-Work-Trial-665268ac30a944a496455c00b2a1975a)
 
 👋 Welcome Seamus! We’re excited to work together and see if there’s a fit. We’ll plan on 9am-5pm for the week.
 

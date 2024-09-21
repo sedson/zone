@@ -1,4 +1,5 @@
 @import url(./colors.css);
+@import url(./colors-dark.css);
 @font-face {
   font-family: iAWriter;
   src: url('/fonts/iAWriterDuoS-Regular.woff2') format('woff2');
@@ -29,29 +30,17 @@
   font-size: 13px;
   line-height: 1.4em;
   height: 100vh;
-  
-  --background: var(--light);
-  --text: var(--dark);
-  --line: rgb(from var(--text) r g b / 0.5);
-  --bg25: rgb(from var(--text) r g b / 0.25);
-  --bg50: rgb(from var(--text) r g b / 0.5);
-  --bg10: rgb(from var(--text) r g b / 0.1);
+  --line: var(--gray-3);
+  --text: var(--gray-1);
 }
-/* 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111;
-    --text:  #888;
-  }
-} */
+
 
 *:focus {
   outline: none;
 }
 
 ::selection {
-  background-color: var(--red-light);
-  color: var(--red-dark);
+  background-color: var(--gray-4);
 }
 
 header {
@@ -62,7 +51,7 @@ header {
 }
 
 body {
-  background: var(--background);
+  background: var(--page);
   color: var(--text);
   height: 100%;
   padding: 2rem;
@@ -71,12 +60,13 @@ body {
 
 button {
   border: none;
-  background: var(--teal-fade);
-  color: var(--teal-dark);
+  background: var(--gray-2);
+  color: var(--page);
   padding: 0.5em 1em;
   cursor: pointer;
   font-family: unset;
   text-align: left;
+  border-radius: 0.5rem;
 }
 
 .fill {
@@ -92,7 +82,10 @@ button {
 .box {
   border: 1px solid var(--line);
 }
-a { color: unset; }
+a { 
+  color: currentcolor;
+  text-decoration-color: currentcolor;
+}
 .bl { border-left: 1px solid var(--line); }
 .bt { border-top: 1px solid var(--line); }
 .bb { border-bottom: 1px solid var(--line); }
@@ -115,7 +108,7 @@ a { color: unset; }
 
 .sidebar {
   height: 100%;
-  width: calc(100% / 3);
+  width: calc(100% / 4);
   max-width: 30ch;
   position: relative;
   & li {
@@ -134,7 +127,6 @@ a { color: unset; }
   #new {
     position: absolute;
     bottom: 0;
-    width: 100%;
   }
 }
 
@@ -158,7 +150,7 @@ a { color: unset; }
 *[contenteditable="true"] {
   &:focus {
     outline: none;
-    background: var(--bg25);
+    background: var(--gray-4);
   }
 }
 
@@ -168,24 +160,31 @@ a { color: unset; }
 }
 
 .tag {
-  background: var(--yellow-fade);
-  color: var(--yellow-dark);
+  background: var(--yellow-4);
+  color: var(--yellow-1);
   margin: 0.5em;
+  padding: 0.125em 0.5em;
+  border-radius: 4px;
 }
 
 .selected, .active-tab {
-  background: var(--green-fade);
-  color: var(--green-dark);
+  font-weight: bold;
+}
+
+.selected {
+  background: var(--green-4);
+  color: var(--green-1);
 }
 
 .link-card {
   display: block;
   margin: 1rem;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--blue-fade);
-  color: var(--blue-bright);
+  border: 1px solid var(--blue-3);
+  background: var(--blue-4);
+  color: var(--blue-1);
   & a {
-    text-decoration-color: var(--blue);
+    text-decoration-color: var(--blue-1);
   }
   & div::before {
     content: "↗ ";
@@ -193,6 +192,8 @@ a { color: unset; }
 }
 
 .swatch {
-  width: 50px;
-  height: 50px;
+  width: 20px;
+  aspect-ratio: 1;
+  margin: 1px;
+  border-radius: 2px;
 }
