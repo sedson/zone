@@ -3,7 +3,8 @@ import { extname, join } from "path";
 
 type Server = (req: Request) => Promise<Response>;
 type ServerConfig = {
-  notes: string,
+  daily: string,
+  named: string,
   pub: string,
 }
 
@@ -44,11 +45,11 @@ async function serveFile(path: string): Promise<Response> {
 
 /**
  * Set up the notes server
- * @param {ServerConfig} { pub, notes }
+ * @param {ServerConfig} config
  * @return {Promise<Server>}
  */
-export async function server({ pub, notes }: ServerConfig): Promise<Server> {
-  await Files.init(notes);
+export async function server(config: ServerConfig): Promise<Server> {
+  await Files.init(config.daily, config.named);
 
   return async function (req: Request): Promise<Response> {
     const method = req.method.toUpperCase();
@@ -102,7 +103,7 @@ export async function server({ pub, notes }: ServerConfig): Promise<Server> {
 
     // Handle directories  
     if (path.endsWith("/")) {
-      const index = Bun.file(join(pub, path, "index.html"));
+      const index = Bun.file(join(config.pub, path, "index.html"));
       if (await index.exists()) {
         // Index exists -> serve it!
         path = join(path, "index.html"); 
@@ -115,11 +116,11 @@ export async function server({ pub, notes }: ServerConfig): Promise<Server> {
       return Response.redirect(join(path, "/"), 301);
     }
     
-    const file = Bun.file(join(pub, path));
+    const file = Bun.file(join(config.pub, path));
     if (!await file.exists()) {
       return new Response("not found", { status: 404 });
     }
 
-    return serveFile(join(pub, path));
+    return serveFile(join(config.pub, path));
   }
 }

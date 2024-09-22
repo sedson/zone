@@ -1,8 +1,8 @@
-import { stat } from "fs/promises";
-import { unlink } from "fs/promises";
-import { mkdir, writeFile, readdir} from "fs/promises";
-import { dirname, join } from "path";
+import { mkdir, writeFile, readdir, unlink, stat} from "fs/promises";
+import { join } from "path";
 import { getFormattedDate, matchFormattedDate} from "../public/js/dates";
+
+
 
 export interface Note {
   id: string, 
@@ -46,13 +46,14 @@ function noteSortCreate(a: Note, b: Note, ) {
 
 
 export class Files {
-  static async init(path: string) {
-    DIRS.daily= join(path, "daily");
-    DIRS.named= join(path, "named");
+  static async init(daily: string, named: string) {
+    DIRS.daily = daily;
+    DIRS.named = named;
     await Promise.all([
       mkdir(DIRS.daily, { recursive: true }),
       mkdir(DIRS.named, { recursive: true }),
     ]);
+    console.log({DIRS})
   }
 
   /**
@@ -200,7 +201,7 @@ function stringToNote(str: string): Note {
 
 
 function cleanName (name: string) : string {
-  const out = [];
+  const out: string[] = [];
   for (let i = 0; i < name.length; ++i) {
     let char = name[i];
     if (char >= 'A' && char <= 'Z') {
