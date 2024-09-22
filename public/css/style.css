@@ -26,7 +26,7 @@
 
 :root {
   font-family: iAWriter, Monaco, monospace;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.4em;
   height: 100vh;
   --line: var(--gray-3);
@@ -43,9 +43,45 @@
 }
 
 header {
-  padding-bottom: 1rem;
-  & nav>span {
-    margin-right: 1em;
+  z-index: 0;
+  position: relative;
+  margin-bottom: -1px;
+  
+  & nav {
+    display: flex;
+  }
+
+  & nav > span {
+    display: inline-block;
+    position: relative;
+    padding: 0.5rem;
+    width: 16ch;
+    border-radius: 0.5rem 0.5rem 0 0rem;
+    border: 1px solid var(--gray-3);
+    border-bottom: none;
+    color: var(--gray-3);
+    transition: color 0.2s ease;
+    
+    & a {
+      text-decoration: none;
+    }
+    
+    & + span {
+      margin-left: -1px;
+    }
+
+    &:hover {
+      color: var(--red-2);
+    }
+    
+    &.active-tab {
+      color: var(--red-1);
+      border: 1px solid var(--gray-3);
+      border-bottom: none;
+      z-index: 1;
+      padding-bottom: calc(0.5rem + 1.5px);
+      background-color: var(--page);
+    }
   }
 }
 
@@ -54,7 +90,6 @@ body {
   color: var(--text);
   height: 100%;
   padding: 2rem;
-  padding-top: 1rem;
 }
 
 button {
@@ -68,23 +103,15 @@ button {
   border-radius: 0.5rem;
 }
 
-.fill {
-  width: 100%;
-  height: 100%;
-}
-.flex {
-  display: flex;
-}
-.col {
-  flex-direction: column;
-}
-.box {
-  border: 1px solid var(--line);
-}
 a { 
   color: currentcolor;
   text-decoration-color: currentcolor;
 }
+
+.fill { width: 100%; height: 100%; }
+.flex { display: flex; }
+.col { flex-direction: column; }
+.box { border: 1px solid var(--line); }
 .bl { border-left: 1px solid var(--line); }
 .bt { border-top: 1px solid var(--line); }
 .bb { border-bottom: 1px solid var(--line); }
@@ -110,19 +137,24 @@ a {
   width: calc(100% / 4);
   max-width: 30ch;
   position: relative;
+  
   & li {
     list-style: none;
   }
+  
   & h2 {
     border-bottom: 1px solid var(--line);
   }
+  
   a + h2 {
     border-top: 1px solid var(--line);
     margin-top: 1rem;
   }
+  
   #links * {
     padding: 0rem 1rem;
   }
+  
   #new {
     position: absolute;
     bottom: 0;

@@ -51,3 +51,47 @@
   --green-3: color-mix(in srgb, var(--green-1) 35%, var(--page) 65%);
   --green-4: color-mix(in srgb, var(--green-1) 10%, var(--page) 90%);
 }
+
+:root.scheme-dark {
+  --page:  #111;
+  --gray-1: #ccc;
+}
+:root.scheme-mode {
+  --page: #222022;
+  --gray-1: #ccc;
+  --pink-1: #FF77B3;
+  --purple-1: #a49fe3;
+  --orange-1: #ff806c;
+  --yellow-1: #daca77;
+  --cyan-1: #75c3b3;
+  --blue-1: #65dfff;
+  --green-1: hsl(from var(--cyan-1) calc(h - 80) calc(s + 10) calc(l - 10));
+}
+:root.scheme-quiet {
+  --page: #ccc;
+  --gray-1: #222;
+  --pink-1: color-mix(in srgb, pink 20%, var(--gray-1) 80%);
+  --purple-1: color-mix(in srgb, violet 20%, var(--gray-1) 80%);
+  --red-1: color-mix(in srgb, red 20%, var(--gray-1) 80%);
+  --orange-1: color-mix(in srgb, orange 20%, var(--gray-1) 80%);
+  --yellow-1: color-mix(in srgb, gold 20%, var(--gray-1) 80%);
+  --blue-1: color-mix(in srgb, blue 50%, var(--gray-1) 50%);
+  --green-1: color-mix(in srgb, green 50%, var(--gray-1) 50%);
+  --teal-1: color-mix(in srgb, teal 50%, var(--gray-1) 50%);
+  --cyan-1: color-mix(in srgb, cyan 20%, var(--gray-1) 80%);
+}
+:root.scheme-quiet-dark {
+  --page: #222;
+  --gray-1: #ccc;
+  --pink-1: color-mix(in srgb, pink 20%, var(--gray-1) 80%);
+  --purple-1: color-mix(in srgb, violet 20%, var(--gray-1) 80%);
+  --red-1: color-mix(in srgb, red 20%, var(--gray-1) 80%);
+  --orange-1: color-mix(in srgb, orange 20%, var(--gray-1) 80%);
+  --yellow-1: color-mix(in srgb, gold 20%, var(--gray-1) 80%);
+  --blue-1: color-mix(in srgb, blue 50%, var(--gray-1) 50%);
+  --green-1: color-mix(in srgb, green 50%, var(--gray-1) 50%);
+  --teal-1: color-mix(in srgb, teal 50%, var(--gray-1) 50%);
+  --cyan-1: color-mix(in srgb, cyan 20%, var(--gray-1) 80%);
+}
+
+

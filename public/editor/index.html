@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="scheme-mode">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,18 +14,23 @@
       <span>
         <a href="/">[1] ZONE</a>
       </span>
-      <span>
-        <a href="/editor" class="active-tab">[2] EDITOR</a>
+      <span class="active-tab">
+        <a href="/editor">[2] EDITOR</a>
       </span>
     </nav>
   </header>
   <div class="flex fill box">
+    
     <div id="sidebar" class="sidebar">
       <h1 class="p50 bb">[S] SIDEBAR</h1>
-      <div id="links" class="">
+      <h2>daily</h2>
+      <div class="file-selector" id="daily"></div>
+      <h2>notes</h2>
+      <div class="file-selector" id="notes"></div>
       </div>
       <button id="new" class="bt">[N] NEW NOTE</button>
     </div>
+    
     <div id="editor" class="editor bl">
       <h1 contenteditable="true" id="editor-title" class="bb p50"></h1>
       <textarea-plus id="editor-text" class="fill"></textarea-plus>
