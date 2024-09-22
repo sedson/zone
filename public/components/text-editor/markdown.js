@@ -50,10 +50,10 @@ const lineTypes = new Map(Object.entries({
   "####": "h4",
   "#####": "h5",
   "######": "h6",
+  ">": "block-quote",
   "-": "list-item",
   "+": "list-item",
 }));
-
 
 /**
  * @param {string} line
@@ -64,6 +64,11 @@ function getLineType(line) {
     if (line.startsWith(pattern + " ")) {
       return [type, pattern];
     }
+  }
+  // check for 1 or more digits followed by ". "
+  const result = line.match( /^\d+\.\s/);
+  if (result) {
+    return ["list-item-num", result[0].slice(0, -1)];
   }
   return null;
 }

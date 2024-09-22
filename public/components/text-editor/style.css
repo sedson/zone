@@ -133,12 +133,17 @@
     color: var(--gray-2);
   }
 }
+.list-item-num {
+  & > .marker {
+    color: var(--purple-1);
+  }
+}
 .link-text {
   color: var(--blue-1);
-  text-decoration: underline;
 }
 .link-url {
   color: var(--cyan-2);
+  text-decoration: underline;
 }
 .code {
   color: var(--gray-2);
@@ -151,3 +156,8 @@
 }
 .italic { font-style: italic; }
 .bold { font-weight: bold; }
+
+.line:has(.block-quote) {
+  box-shadow: 0 -2px 0 var(--yellow-3);
+  background: var(--yellow-4);
+}
