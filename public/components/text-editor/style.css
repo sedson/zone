@@ -88,12 +88,7 @@
 }
 
 .source::selection {
-  background-color: rgb(from var(--gray-4) r g b / 0.5);
-  color: unset;
-}
-
-.source:focus {
-  outline: none;
+  background-color: rgb(from var(--purple-2) r g b / 0.25);
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6 { font-weight: bold; }

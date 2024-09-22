@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scheme-mode">
+<html class="scheme-dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,29 +18,32 @@
         <a href="/editor">[2] EDITOR</a>
       </span>
     </nav>
+    <div class="flex">
+      <button>[N] New note</button>
+    </div>
+
   </header>
   <div class="flex fill box">
     
-    <div id="sidebar" class="sidebar">
+    <div id="sidebar" class="sidebar flex col">
       <h1 class="p50 bb">[S] SIDEBAR</h1>
       <h2>daily</h2>
-      <div class="file-selector" id="daily"></div>
+      <ul class="file-selector" id="daily" style="height: 30%;"></ul>
       <h2>notes</h2>
-      <div class="file-selector" id="notes"></div>
-      </div>
-      <button id="new" class="bt">[N] NEW NOTE</button>
+      <ul class="file-selector" id="named-notes" style="flex-grow: 1"></ul>
     </div>
     
     <div id="editor" class="editor bl">
       <h1 contenteditable="true" id="editor-title" class="bb p50"></h1>
       <textarea-plus id="editor-text" class="fill"></textarea-plus>
     </div>
-    <div id="meta" class="bl meta">
-      <h1 class="bb p50">Meta</h1>
+    
+    <div id="meta" class="bl meta flex col">
+      <h1 class="bb p50">[M] META</h1>
       <h2>links</h2>
-      <div id="meta-links"></div>
+      <div id="meta-links" style="flex-grow: 1"></div>
       <h2>refs</h2>
-      <div id="meta-refs"></div>
+      <div id="meta-refs" style="height: 20%"></div>
     </div>
   </div>
 </body>

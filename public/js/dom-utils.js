@@ -43,6 +43,10 @@ export function tag (string, props) {
   }
   
   for (let propName in props) {
+    if (propName === "children") {
+      elem.append(...props.children);
+      continue;
+    }
     const prop = props[propName];
     if (typeof prop === 'object') {
       Object.assign(elem[propName], props[propName]);

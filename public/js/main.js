@@ -98,30 +98,26 @@ async function fillSidebar () {
   if (!res.ok) return;
   
   const notes = await res.json();
+  console.log(notes)
 
-  const sidebar = select("#links");
-  sidebar?.append(tag('h2', {
-    innerText: 'daily'
-  }));
-
+  const daily = select("#daily");
   for (let note of notes.daily) {
-    sidebar?.append(tag("a.note-link", {
+    let link = tag("a.note-link", {
       innerText: note.id,
       dataset: { id: note.id },
       href: `#${note.id}`,
-    }));
+    });
+    daily?.append(tag("li", { children: [ link ] }))
   }
 
-  sidebar?.append(tag('h2', {
-    innerText: 'notes'
-  }));
-
+  const named = select("#named-notes");
   for (let note of notes.named) {
-    sidebar?.append(tag("a.note-link", {
+    let link = tag("a.note-link", {
       innerText: note.title,
       dataset: { id: note.id },
       href: `#${note.id}`,
-    }));
+    });
+    named?.append(tag("li", { children: [ link ]}))
   }
 }
 
