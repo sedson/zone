@@ -12,9 +12,29 @@ const today = getFormattedDate();
 const editor = /** @type {TextareaPlus} */ (select("#editor-text"));
 const title = /** @type {HTMLElement} */ (select("#editor-title"));
 const meta = /** @type {HTMLElement} */ (select("#meta"));
+const search = /** @type {HTMLElement} */ (select("#search"));
+
 
 
 let noteId = '';
+
+let searchMap = new Map();
+
+/**
+ * @type {Record<string, string>}
+ */
+let globalNotes = {};
+
+/**
+ * @param {string} str
+ */
+function getSearchable(str) {
+  return str.split(/\-\s/)
+    .filter(x => x.length > 0)
+    .map(x => x.toLowerCase())
+    .join(" ");
+}
+
 
 
 /**
@@ -86,10 +106,13 @@ async function hashChange() {
     select(`.note-link[data-id="${noteId}"`)?.classList.add('selected');
 
     buildMetaView();
+
+    search.classList.add("hidden");
+    const searchInput = select("search-input");
+    if (searchInput && searchInput.value) {
+      searchInput.value = "";
+    }
   }
-
-
-
 }
 
 
@@ -113,11 +136,16 @@ async function fillSidebar () {
   const named = select("#named-notes");
   for (let note of notes.named) {
     let link = tag("a.note-link", {
-      innerText: note.title,
+      innerText: note.title || "[]",
       dataset: { id: note.id },
       href: `#${note.id}`,
     });
     named?.append(tag("li", { children: [ link ]}))
+  }
+
+  for (let note of notes.named) {
+    searchMap.set(note.id, getSearchable(note.title));
+    globalNotes[note.id] = note.title;
   }
 }
 
@@ -133,19 +161,13 @@ editor.listen(editor.source, 'input', (e) => {
   buildMetaView();
 });
 
-editor.mapkey("tab", () => editor.indent())
-editor.mapkey("shift+tab", () => editor.indent(true))
-editor.mapkey("meta+'", (e) => {
-  e.preventDefault();
-  const contextMenuEvent = new MouseEvent('contextmenu', {
-    bubbles: true,
-    cancelable: true,
-    view: window,
-    button: 2, 
-  });
-  console.log(contextMenuEvent);
-  // Dispatch the event
-  editor.source.dispatchEvent(contextMenuEvent);
+editor.mapkey("tab", (e) => {
+  if (e.target !== editor) return;
+  editor.indent()
+});
+editor.mapkey("shift+tab", (e) => {
+  if (e.target !== editor) return;
+  editor.indent(true);
 });
 
 
@@ -162,14 +184,20 @@ select("#editor-title")?.addEventListener('input', (e) => {
   if (sideBarElem) {
     sideBarElem.innerText = title;
   }
+  searchMap.set(noteId, getSearchable(title));
+  globalNotes[noteId] = title;
+  buildSearchResults("");
 });
 
 
-select("#new")?.addEventListener("click", async () => {
+async function newNote() {
+  console.log('new')
+  
   const res = await fetch("/notes", {
     method: "POST",
     body: JSON.stringify({ title: 'New Note' })
   });
+
   if (!res.ok) return;
   const note = await res.json();
 
@@ -178,9 +206,11 @@ select("#new")?.addEventListener("click", async () => {
     dataset: { id: note.id },
     href: `#${note.id}`,
   }));
-
   window.location.hash = note.id;
-});
+}
+
+
+select("#new")?.addEventListener("click", newNote);
 
 
 
@@ -203,6 +233,70 @@ function buildMetaView() {
 }
 
 
+/**
+ * @param {string} str
+ */
+function buildSearchResults(str) {
+  const results = select("#results");
+  if (results === null) return;
+
+  results.innerHTML = "";
+
+  const query = str.toLowerCase();
+  for (let [id, safeTitle] of searchMap) {
+    if (safeTitle.indexOf(query) > -1) {
+      results.append(tag("li.search-result", {
+        role: "option",
+        children: [tag("a", {
+          innerText: globalNotes[id],
+          href: `#${id}`,
+        })],
+      }));
+    }
+  }
+}
+
+select("#search-input")?.addEventListener("input", e => {
+  buildSearchResults(e.target.value);
+});
+
+window.addEventListener("keydown", async (e) => {
+  if (e.key === "Escape") {
+    search.classList.add("hidden");
+    return;
+  }
+
+  if (e.key === "1" && e.metaKey) {
+    window.location.href = "/";
+    e.preventDefault();
+    return;
+  }
+  if (e.key === "2" && e.metaKey) {
+    window.location.href = "/editor";
+    e.preventDefault();
+    return;
+  }
+  if (e.key === "m" && e.metaKey) {
+    e.preventDefault();
+    await newNote();
+  }
+  if ((e.key === "/" || e.key === "p") && e.metaKey) {
+    search.classList.toggle("hidden");
+    if (!search.classList.contains("hidden")) {
+      select("#search-input")?.focus();
+    }
+    e.preventDefault();
+    return;
+  }
+});
+
+select("#search-button")?.addEventListener("click", () => {
+  search.classList.toggle("hidden");
+  if (!search.classList.contains("hidden")) {
+    select("#search-input")?.focus();
+  }
+});
+
 window.addEventListener('hashchange', hashChange);
 
 if (!window.location.hash) {
@@ -211,3 +305,4 @@ if (!window.location.hash) {
 
 await fillSidebar();
 hashChange();
+buildSearchResults("");

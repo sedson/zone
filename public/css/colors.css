@@ -1,5 +1,5 @@
 :root {
-  --page: #e9e6e1;
+  --page: linen;
   
   --gray-1: #333;
   --gray-2: color-mix(in srgb, var(--gray-1) 65%, var(--page) 35%);
