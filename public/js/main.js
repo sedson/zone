@@ -2,10 +2,10 @@
 /**
  * @typedef {import("../../src/files").Note} Note
  */
-
 import { select, tag } from "./dom-utils.js";
 import { TextareaPlus } from "../components/text-editor/text-editor.js";
 import { getFormattedDate, matchFormattedDate, prettyPrintDate } from "./dates.js";
+import * as notesApi from "./notes-api.js";
 
 const today = getFormattedDate();
 
@@ -36,24 +36,6 @@ function getSearchable(str) {
 }
 
 
-
-/**
- * @param {string} id
- * @return {Promise<Partial<Note> | undefined>}
- */
-async function fetchNote(id) {
-  try {
-    const res = await fetch(`/notes/${id}`);
-    if (!res.ok) {
-      throw new Error('res not ok')
-    }
-    return await res.json();
-  } catch (e) {
-
-    return;
-  }
-}
-
 async function hashChange() {
   const id = window.location.hash.slice(1);
   
@@ -63,17 +45,16 @@ async function hashChange() {
   }
   
   if (id) {
-    let note = await fetchNote(id);
+    let note = await notesApi.get(id);
     if (note === undefined) return;
     if (!note.id) {
 
       // failed to fetch make a note for today.
       if (id === today) {
-        const res = await fetch("/notes", {
-          method: "POST",
-          body: JSON.stringify({ id: today })
-        });
-        window.location.reload();
+        const created = await notesApi.create({ id: today });
+        if (created) {
+          window.location.reload();  
+        }
         return;
       }
 
@@ -117,14 +98,9 @@ async function hashChange() {
 
 
 async function fillSidebar () {
-  const res = await fetch('/notes');
-  if (!res.ok) return;
-  
-  const notes = await res.json();
-  console.log(notes)
-
   const daily = select("#daily");
-  for (let note of notes.daily) {
+  
+  for (let note of await notesApi.daily()) {
     let link = tag("a.note-link", {
       innerText: note.id,
       dataset: { id: note.id },
@@ -134,30 +110,31 @@ async function fillSidebar () {
   }
 
   const named = select("#named-notes");
-  for (let note of notes.named) {
+  
+  for (let note of await notesApi.named()) {
     let link = tag("a.note-link", {
       innerText: note.title || "[]",
       dataset: { id: note.id },
       href: `#${note.id}`,
     });
-    named?.append(tag("li", { children: [ link ]}))
-  }
+    named?.append(tag("li", { 
+      children: [ link ],
+      tabIndex: 0,
+      role: "link"
+    }))
 
-  for (let note of notes.named) {
-    searchMap.set(note.id, getSearchable(note.title));
-    globalNotes[note.id] = note.title;
+    if (note.id !== undefined && note.title !== undefined) {
+      searchMap.set(note.id, getSearchable(note.title ?? ""));
+      globalNotes[note.id] = note.title;  
+    }
   }
 }
 
 
 editor.listen(editor.source, 'input', (e) => {
   if (noteId) {
-    fetch(`/notes/${noteId}`, {
-      method: "PUT",
-      body: JSON.stringify({ content: editor.text }),
-    });  
+    notesApi.update(noteId, { content: editor.text });
   }
-  
   buildMetaView();
 });
 
@@ -173,12 +150,10 @@ editor.mapkey("shift+tab", (e) => {
 
 
 select("#editor-title")?.addEventListener('input', (e) => {
-  let title = e.srcElement?.innerText ?? '';
+  let title = e.target?.innerText ?? '';
   title = title.trim().replaceAll("\n", " ");
-  fetch(`/notes/${noteId}`, {
-    method: "PUT",
-    body: JSON.stringify({ title }),
-  });
+  
+  notesApi.update(noteId, { title });
 
   const sideBarElem = select(`[data-id=${noteId}`);
   if (sideBarElem) {
@@ -219,10 +194,13 @@ function buildMetaView() {
   if (linkArea === null) return;
   linkArea.innerHTML = "";
   
+  
   for (let [url, text] of Object.entries(editor.meta.links)) {
+    const href = url.slice(1, -1);
+    const external = (href.startsWith("http://") || href.startsWith("https://") || href.indexOf(".") > -1);
     const link = tag("a.link-card", {
-      href: url.slice(1, -1),
-      target: "_blank",
+      href: href,
+      target: external ? "_blank" : "",
     });
     const linkDiv = tag("div", {
       innerText: text.slice(1, -1),

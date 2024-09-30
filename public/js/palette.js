@@ -4,6 +4,8 @@ const schemes = [
   "scheme-dark",
   "scheme-quiet-dark",
   "scheme-mode",
+  "scheme-lake",
+  "scheme-pool",
 ];
 
 let scheme;
@@ -29,6 +31,3 @@ function cyclePalette(){
     console.log(localStorage)
   } catch (e) {}
 }
-
-
-

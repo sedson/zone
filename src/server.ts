@@ -72,10 +72,18 @@ export async function server(config: ServerConfig): Promise<Server> {
         // GET /notes
         const daily = await Files.allDaily();
         const named = await Files.allNamed();
-        return json({ daily, named })
+        return json(daily.concat(named));
       }
 
       const id = parts.shift();
+
+      if (id === "daily" && method === "GET") {
+        return json(await Files.allDaily());
+      }
+
+      if (id === "named" && method === "GET") {
+        return json(await Files.allNamed());
+      }
 
       if (id) {
         // GET /nodes/:id 

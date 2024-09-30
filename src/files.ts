@@ -1,11 +1,11 @@
-import { mkdir, writeFile, readdir, unlink, stat} from "fs/promises";
+import { mkdir, writeFile, readdir, unlink, stat } from "fs/promises";
 import { join } from "path";
-import { getFormattedDate, matchFormattedDate} from "../public/js/dates";
+import { getFormattedDate, matchFormattedDate } from "../public/js/dates";
 
 
 
 export interface Note {
-  id: string, 
+  id: string,
   title?: string,
   content: string,
   created_at: string,
@@ -18,7 +18,7 @@ export interface NoteSummary {
   created_at: string
 }
 
-const dailyTemplate = `# todo 
+const dailyTemplate = `# todo
 
 # links
 
@@ -29,7 +29,7 @@ const DIRS: Record<string, string> = {
   named: ""
 };
 
-function idToPath(id:string):string {
+function idToPath(id: string): string {
   if (matchFormattedDate(id)) {
     return join(DIRS.daily, id + ".md");
   }
@@ -40,7 +40,7 @@ function noteSortUpdate(a: Note, b: Note) {
   return new Date(a.updated_at) < new Date(b.updated_at) ? 1 : -1;
 }
 
-function noteSortCreate(a: Note, b: Note, ) {
+function noteSortCreate(a: Note, b: Note,) {
   return new Date(a.created_at) < new Date(b.created_at) ? 1 : -1;
 }
 
@@ -53,7 +53,7 @@ export class Files {
       mkdir(DIRS.daily, { recursive: true }),
       mkdir(DIRS.named, { recursive: true }),
     ]);
-    console.log({DIRS})
+    console.log({ DIRS })
   }
 
   /**
@@ -72,7 +72,7 @@ export class Files {
       created_at: timestamp,
       updated_at: timestamp,
     };
-    
+
     if (note.title) {
       n.title = note.title;
       n.id = randomId();
@@ -90,9 +90,9 @@ export class Files {
     return n;
   }
 
-  static async load(path: string): Promise<Note|undefined> {
+  static async load(path: string): Promise<Note | undefined> {
     const file = Bun.file(path);
-    
+
     if (!await file.exists()) {
       return undefined;
     }
@@ -131,7 +131,7 @@ export class Files {
     return Files.allInDir(DIRS.named, true);
   }
 
-  static async getById (id: string): Promise<Note | undefined> {
+  static async getById(id: string): Promise<Note | undefined> {
     if (id.startsWith("n-")) {
       return await Files.load(join(DIRS.named, id + ".md"));
     } else {
@@ -139,7 +139,7 @@ export class Files {
     }
   }
 
-  static async update(id: string, updates: Partial<Note>) : Promise<Note | undefined> {
+  static async update(id: string, updates: Partial<Note>): Promise<Note | undefined> {
     const note = await Files.getById(id);
     if (!note) return;
 
@@ -157,7 +157,7 @@ export class Files {
   static async delete(id: string): Promise<boolean> {
     const note = await Files.getById(id);
     if (!note) return false;
-    
+
     const path = join((id.startsWith("n-") ? DIRS.named : DIRS.daily), id + ".md");
     await unlink(path);
     return true;
@@ -180,7 +180,7 @@ function stringToNote(str: string): Note {
   const lines = str.split("\n");
   const meta: Record<string, string> = {};
   let contentStart = 0;
-  
+
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].startsWith("---")) {
       contentStart = i + 1;
@@ -189,7 +189,7 @@ function stringToNote(str: string): Note {
     const [k, v] = lines[i].split(": ");
     meta[k] = v.trim();
   }
-  
+
   return {
     id: meta.id ?? "unknown",
     title: meta.title ?? "",
@@ -200,7 +200,7 @@ function stringToNote(str: string): Note {
 }
 
 
-function cleanName (name: string) : string {
+function cleanName(name: string): string {
   const out: string[] = [];
   for (let i = 0; i < name.length; ++i) {
     let char = name[i];
@@ -218,7 +218,7 @@ function cleanName (name: string) : string {
 }
 
 
-function randomId (len = 8): string {
+function randomId(len = 8): string {
   return "n-" + crypto.getRandomValues(new Uint8Array(8)).reduce((p, n) => {
     return p + n.toString(36);
   }, "").slice(-len);

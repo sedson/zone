@@ -30,13 +30,13 @@
     </div>
   </header>
   
-  <div class="flex fill box no-pointer">
-    <div id="sidebar" class="sidebar flex col pointer">
+  <main class="flex fill box no-pointer">
+    <div id="sidebar" class="sidebar pointer">
       <h1 class="p50 bb">sidebar</h1>
       <h2>daily</h2>
-      <ul class="file-selector" id="daily" style="height: 30%;"></ul>
+      <ul class="file-selector" id="daily" style="height: 20%;"></ul>
       <h2>notes</h2>
-      <ul class="file-selector" id="named-notes" style="flex-grow: 1"></ul>
+      <ul class="file-selector" id="named-notes" style="flex-shrink: 1"></ul>
     </div>
 
     <div id="editor" class="editor bl">
@@ -56,6 +56,6 @@
       <input type="text" name="search-input" placeholder="search" id="search-input">
       <ul id="results" role="listbox"></ul>
     </div>
-  </div>
+  </main>
 </body>
 </html>

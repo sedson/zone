@@ -68,7 +68,7 @@
   --green-1: hsl(from var(--cyan-1) calc(h - 80) calc(s + 10) calc(l - 10));
 }
 :root.scheme-quiet {
-  --page: #ccc;
+  --page: linen;
   --gray-1: #222;
   --pink-1: color-mix(in srgb, pink 20%, var(--gray-1) 80%);
   --purple-1: color-mix(in srgb, violet 20%, var(--gray-1) 80%);
@@ -88,10 +88,32 @@
   --red-1: color-mix(in srgb, red 20%, var(--gray-1) 80%);
   --orange-1: color-mix(in srgb, orange 20%, var(--gray-1) 80%);
   --yellow-1: color-mix(in srgb, gold 20%, var(--gray-1) 80%);
-  --blue-1: color-mix(in srgb, blue 50%, var(--gray-1) 50%);
-  --green-1: color-mix(in srgb, green 50%, var(--gray-1) 50%);
-  --teal-1: color-mix(in srgb, teal 50%, var(--gray-1) 50%);
+  --blue-1: color-mix(in srgb, dodgerblue 35%, var(--gray-1) 65%);
+  --green-1: color-mix(in srgb, green 35%, var(--gray-1) 65%);
+  --teal-1: color-mix(in srgb, teal 35%, var(--gray-1) 65%);
   --cyan-1: color-mix(in srgb, cyan 20%, var(--gray-1) 80%);
 }
-
-
+:root.scheme-lake {
+  --page: #1A2C34;
+  --gray-1: #7AA8B7;
+  --blue-1: #62B1CB;
+  --pink-1: #BBD7E1;
+  --red-1: #739FAD;
+  --green-1: #72A944;
+  --orange-1: #3F91AC;
+  --yellow-1: #FFEB66;
+  --purple-1: #CBBB4D;
+}
+:root.scheme-pool {
+  --page: #2A2433;
+  --gray-1: color-mix(in srgb, #9A90A7, pink);
+  --yellow-1: #FFB6B3;
+  --orange-1: #F87972;
+  --red-1: color-mix(in srgb, #F76DA5 80%, red 20%);
+  --pink-1: #F76DA5;
+  --purple-1: #9265D2;
+  --blue-1: color-mix(in srgb, #9265D2 60%, dodgerblue 40%);
+  --cyan-1: color-mix(in srgb, #9265D2 80%, aqua 20%);
+  --teal-1: color-mix(in srgb, #9265D2 60%, teal 40%);
+  --green-1: color-mix(in srgb, #FFB6B3 60%, green 40%);
+}
