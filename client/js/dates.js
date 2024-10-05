@@ -21,6 +21,9 @@ export function matchFormattedDate(date) {
   return /^\d{4}-\d{2}-\d{2}$/.test(date);
 }
 
+/**
+ * @param {string} dateString
+ */
 export function prettyPrintDate(dateString) {
   // Create a date object using the input string
   const date = new Date(dateString + 'T00:00:00');

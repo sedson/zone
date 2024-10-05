@@ -88,6 +88,10 @@ export class CustomComponent extends HTMLElement {
    * @param {KeyboardEvent} e
    */ 
   #keys(e) {
+    if (e.target !== this) {
+      return;
+    }
+    
     const keys = [];
     if (e.ctrlKey) keys.push('ctrl');
     if (e.shiftKey) keys.push('shift');
@@ -101,12 +105,15 @@ export class CustomComponent extends HTMLElement {
     if (!keymapEntry) {
       return;
     }
+    
     keymapEntry.fn(e);
+    
     if (keymapEntry.preventDefault) {
       e.preventDefault();
     }
 
     if (this.captureKeys) {
+      e.preventDefault();
       e.stopPropagation();
     }
   }

@@ -13,18 +13,15 @@ const root = document.querySelector(":root");
 
 try {
   scheme = localStorage.getItem("zone-scheme");
-  console.log(scheme)
   if (scheme) {
-    console.log(root, scheme)
     root && (root.className = scheme);
   }
 } catch (e) {
   scheme = schemes[0];
 }
 
-function cyclePalette(){
+export function cyclePalette(){
   scheme = schemes[(schemes.indexOf(scheme) + 1) % schemes.length];
-  console.log(scheme)
   root && (root.className = scheme);
   try {
     localStorage.setItem("zone-scheme", scheme);

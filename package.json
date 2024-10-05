@@ -2,6 +2,9 @@
   "name": "zone",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun --watch run ./server/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

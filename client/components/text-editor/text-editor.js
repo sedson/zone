@@ -37,10 +37,7 @@ const dictionary = new Set(["a", "word", "next"]);
 /**
  * The SLOP editor.
  */
-export class TextareaPlus extends CustomComponent {
-
-  captureKeys = true;
-  
+export class TextareaPlus extends CustomComponent {  
   constructor() {
     super();
     
@@ -95,6 +92,8 @@ export class TextareaPlus extends CustomComponent {
     this.meta = {
       links: {},
     };
+
+    this.captureKeys = true;
   }
 
 

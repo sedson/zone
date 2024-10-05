@@ -20,14 +20,11 @@
   font-size: 1rem;
   line-height: 1.5em;
   font-weight: normal;
-  &:focus {
-    background-size: 0.5rem;
-    background-position: 0.5rem 0.5rem;
-    
-    [contenteditable="true"] {
-      border: 1px solid var(--gray-1);
-    }
-  }
+  /* &:focus {
+    outline: 2px solid var(--teal-3);
+    position: relative;
+    z-index: 10;
+  } */
 }
 :root {
   font-family: iAWriter, Monaco, monospace;
@@ -182,15 +179,17 @@ a {
   display: flex;
   flex-direction: column;
 
-  & li {
+  & a {
     padding: 0 1rem;
     color: var(--gray-2);
     list-style: none;
-    
-    & > a {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    &.selected {
+      background: var(--gray-4);
+      color: var(--gray-1);
+      font-weight: bold;
     }
   }
   
@@ -207,12 +206,6 @@ a {
     & + h2 {
       border-top: 1px solid var(--line);
     }
-  }
-
-  & li:has(.selected) {
-    background: var(--gray-4);
-    color: var(--gray-1);
-    & * { font-weight: bold; }
   }
 }
 
@@ -242,13 +235,6 @@ a {
   }
 }
 
-*[contenteditable="true"] {
-  &:focus {
-    outline: 1px solid var(--gray-1);
-    position: relative;
-    z-index: 10;
-  }
-}
 
 .note-link {
   display: block;

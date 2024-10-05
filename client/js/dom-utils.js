@@ -5,7 +5,6 @@
 
 
 /**
- * Proxy for document.querySelector with improved type checking.
  * @param {HTMLElement | string} selector A selector or an HTMLElement.
  * @returns {HTMLElement | null}
  */
@@ -13,9 +12,32 @@ export function select(selector) {
   if (selector instanceof HTMLElement) {
     return selector;
   }
+  
+  if (selector[0] === "#") {
+    return document.getElementById(selector.slice(1));
+  }
+
   const elem = document.querySelector(selector);
   return elem ?? null;
 }
+
+
+/**
+ * @param {HTMLElement | string} selector A selector or an HTMLElement.
+ * @returns {HTMLElement[] | null}
+ */
+export function selectAll(selector) {
+  if (selector[0] === "#") {
+    return [document.getElementById(selector.slice(1))];
+  }
+
+  const elems = document.querySelector(selector);
+  if (!elems) {
+    return null;
+  }
+  return elems;
+}
+
 
 
 /**
@@ -26,7 +48,7 @@ export function select(selector) {
  * @param {object} styleObject 
  * @returns {HTMLElement}
  */
-export function tag (string, props) {
+export function tag(string, props) {
   const tag = string.split(/#|\./)[0].trim();
   const elem = document.createElement(tag);
 

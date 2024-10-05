@@ -1,11 +1,12 @@
 // @ts-check
 /**
- * @typedef {import("../../src/files").Note} Note
+ * @typedef {import("../../server/files").Note} Note
  */
-import { select, tag } from "./dom-utils.js";
+import { select, tag } from "../js/dom-utils.js";
 import { TextareaPlus } from "../components/text-editor/text-editor.js";
-import { getFormattedDate, matchFormattedDate, prettyPrintDate } from "./dates.js";
-import * as notesApi from "./notes-api.js";
+import { getFormattedDate, matchFormattedDate, prettyPrintDate } from "../js/dates.js";
+import { cyclePalette } from "../js/palette.js";
+import * as notesApi from "../js/notes-api.js";
 
 const today = getFormattedDate();
 
@@ -13,7 +14,6 @@ const editor = /** @type {TextareaPlus} */ (select("#editor-text"));
 const title = /** @type {HTMLElement} */ (select("#editor-title"));
 const meta = /** @type {HTMLElement} */ (select("#meta"));
 const search = /** @type {HTMLElement} */ (select("#search"));
-
 
 
 let noteId = '';
@@ -106,7 +106,7 @@ async function fillSidebar () {
       dataset: { id: note.id },
       href: `#${note.id}`,
     });
-    daily?.append(tag("li", { children: [ link ] }))
+    daily?.append(link);
   }
 
   const named = select("#named-notes");
@@ -116,12 +116,9 @@ async function fillSidebar () {
       innerText: note.title || "[]",
       dataset: { id: note.id },
       href: `#${note.id}`,
-    });
-    named?.append(tag("li", { 
-      children: [ link ],
       tabIndex: 0,
-      role: "link"
-    }))
+    });
+    named?.append(link);
 
     if (note.id !== undefined && note.title !== undefined) {
       searchMap.set(note.id, getSearchable(note.title ?? ""));
@@ -138,14 +135,12 @@ editor.listen(editor.source, 'input', (e) => {
   buildMetaView();
 });
 
-editor.mapkey("tab", (e) => {
-  if (e.target !== editor) return;
-  editor.indent()
-});
-editor.mapkey("shift+tab", (e) => {
-  if (e.target !== editor) return;
+editor.mapkey("meta+]", (e) => {  
+  editor.indent();
+}, false);
+editor.mapkey("meta+[", (e) => {
   editor.indent(true);
-});
+}, false);
 
 
 
@@ -274,6 +269,9 @@ select("#search-button")?.addEventListener("click", () => {
     select("#search-input")?.focus();
   }
 });
+select("#themes")?.addEventListener("click", () => {
+  cyclePalette();
+})
 
 window.addEventListener('hashchange', hashChange);
 

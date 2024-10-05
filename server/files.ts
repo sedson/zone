@@ -1,7 +1,9 @@
+/**
+ * @file Read and write note data from the filesystem.
+ */
 import { mkdir, writeFile, readdir, unlink, stat } from "fs/promises";
 import { join } from "path";
-import { getFormattedDate, matchFormattedDate } from "../public/js/dates";
-
+import { getFormattedDate, matchFormattedDate } from "../client/js/dates";
 
 
 export interface Note {
@@ -78,7 +80,7 @@ export class Files {
       n.id = randomId();
     } else {
       if (note.content === "") {
-        note.content = dailyTemplate;
+        n.content = dailyTemplate;
       }
     }
 
