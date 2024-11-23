@@ -1,7 +1,7 @@
 // @ts-check
 /**
- * @typedef {import("../../src/files").Note} Note
- * @typedef {import("../../src/files").NoteSummary} NoteSummary
+ * @typedef {import("../../server/files.ts").Note} Note
+ * @typedef {import("../../server/files").NoteSummary} NoteSummary
  */
 
 

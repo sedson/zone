@@ -20,11 +20,10 @@ try {
   scheme = schemes[0];
 }
 
-export function cyclePalette(){
+export function cyclePalette() {
   scheme = schemes[(schemes.indexOf(scheme) + 1) % schemes.length];
   root && (root.className = scheme);
   try {
     localStorage.setItem("zone-scheme", scheme);
-    console.log(localStorage)
   } catch (e) {}
 }

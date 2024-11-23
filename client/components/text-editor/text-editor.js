@@ -10,6 +10,7 @@
  * manually matched as well.
  *
  * @typedef {import('../custom-component.js').Listener} Listener
+ * @typedef {import('./markdown.js').Token} Token
  * 
  * @typedef {Object} Syntax
  * @prop {((source: string) => Token[]) | undefined} tokenize A tokenizer function
@@ -32,8 +33,6 @@ const markup = `
 <div class="log"></div>
 `.trim();
 
-const dictionary = new Set(["a", "word", "next"]);
-
 /**
  * The SLOP editor.
  */
@@ -44,10 +43,10 @@ export class TextareaPlus extends CustomComponent {
     this.root.innerHTML = markup;
     
     this.source = /** @type {HTMLTextAreaElement} */ (this.root.querySelector('.source')),
-    this.display =  /** @type {HTMLDivElement} */ (this.root.querySelector('.display')),
-    this.displayText = /** @type {HTMLDivElement} */ (this.root.querySelector('.display-text')),
-    this.scrollFiller = /** @type {HTMLDivElement} */ (this.root.querySelector('.scroll-filler')),
-    this.log =  /** @type {HTMLDivElement} */ (this.root.querySelector('.log'))
+      this.display =  /** @type {HTMLDivElement} */ (this.root.querySelector('.display')),
+      this.displayText = /** @type {HTMLDivElement} */ (this.root.querySelector('.display-text')),
+      this.scrollFiller = /** @type {HTMLDivElement} */ (this.root.querySelector('.scroll-filler')),
+      this.log =  /** @type {HTMLDivElement} */ (this.root.querySelector('.log'))
 
     /** @type {Syntax} */
     this.syntax = {
@@ -120,7 +119,7 @@ export class TextareaPlus extends CustomComponent {
   }
 
 
-  connectedCallback () {
+  connectedCallback() {
     super.connectedCallback();
 
     this.listen(this.source, 'scroll', () => this.#mirror());
@@ -315,6 +314,17 @@ export class TextareaPlus extends CustomComponent {
       this.raise('input');
       e.preventDefault();
     }
+  }
+
+
+  /**
+   * Set the position of the carar.
+   * @param {number} index The index of the char to position the carat at.
+   */
+  setCarat(index) {
+    const n = Math.max(0, Math.min(index, this.text.length));
+    this.source.setSelectionRange(n, n);
+    this.updateCaret();
   }
 
 
@@ -598,42 +608,6 @@ export class TextareaPlus extends CustomComponent {
         this.lines[i].classList.add('caret-line');
       }
     }
-  }
-
-
-  replaceToken(tokenIndex, value, pushState = false, selectToken = true) {
-    if (tokenIndex < 0 || tokenIndex > this.tokens.length) {
-      return;
-    }
-
-    if (pushState) {
-      this.#pushState();
-    }
-
-    const str = this.text;
-    const sel = this.selection;
-
-    const token = this.tokens[tokenIndex];
-    const before = str.slice(0, token.range[0]);
-    const after = str.slice(token.range[1]);
-
-    this.source.value = before + value + after;
-    if (selectToken) {
-      const start = token.range[0]
-      const end = token.range[0] + value.toString().length;
-      this.source.setSelectionRange(start, end, "backward");
-    } else {
-      this.source.setSelectionRange(...sel);
-    }
-
-    this.raise('input');
-  }
-
-  /**
-   * Clear the log text.
-   */
-  clearLog() {
-    this.log.innerHTML = '';
   }
 }
 

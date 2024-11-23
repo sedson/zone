@@ -1,8 +1,7 @@
-// @ ts-check
+// @ts-check
 /**
  * @file Dom utilities.
  */
-
 
 /**
  * @param {HTMLElement | string} selector A selector or an HTMLElement.
@@ -18,26 +17,42 @@ export function select(selector) {
   }
 
   const elem = document.querySelector(selector);
-  return elem ?? null;
+  return elem instanceof HTMLElement ? elem : null;
 }
 
 
 /**
- * @param {HTMLElement | string} selector A selector or an HTMLElement.
- * @returns {HTMLElement[] | null}
+ * @param {string} selector A selector.
+ * @returns {HTMLElement[]}
  */
 export function selectAll(selector) {
   if (selector[0] === "#") {
-    return [document.getElementById(selector.slice(1))];
+    const byId = document.getElementById(selector.slice(1));
+    return byId ? [byId] : [];
   }
 
-  const elems = document.querySelector(selector);
-  if (!elems) {
-    return null;
-  }
-  return elems;
+  const elems = document.querySelectorAll(selector);
+  const /** @type {HTMLElement[]} */ arr = [];
+  elems.forEach(elem => {
+    if (elem instanceof HTMLElement) {
+      arr.push(elem);
+    }
+  });
+  return arr;
 }
 
+
+// /**
+//  * Create an element
+//  * @param {[type]} tag [description]
+//  * @param {[type]} props [description]
+//  * @param {[type]} children [description]
+//  * @return {[type]} [description]
+//  */
+// export function h(str, props, children) {
+//   const tag = string.split(/#|\./)[0].trim();
+//   const elem = document.createElement(tag);
+// }
 
 
 /**

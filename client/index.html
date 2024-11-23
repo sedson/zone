@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>zone</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <script type="text/javascript" src="/js/palette.js"></script>
+  <script type="module" src="/js/palette.js"></script>
   <script type="module" src="/js/home.js" defer></script>
+  <script type="module" src="components/index.js"></script>
 </head>
 <body class="flex col">
   <header class="pointer">
     <nav>
       <a href="/" class="active-tab">
-        <span class="tip">1</span>Zone</div>
+        <span class="tip">1</span>Zone
       </a>
       <a href="/editor">
         <span class="tip">2</span><span>Editor</span>
@@ -23,70 +24,11 @@
     <div class="bb">
       <h1 class="s300 p100">ZONE</h1>      
     </div>
-    <div class="bb p100" style="display: flex; flex-flow: row wrap">
-      <div style="display: flex; justify-content">
-        <div style="background-color: var(--gray-1);" class="swatch"></div>
-        <div style="background-color: var(--gray-2);" class="swatch"></div>
-        <div style="background-color: var(--gray-3);" class="swatch"></div>
-        <div style="background-color: var(--gray-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex; justify-content:">
-        <div style="background-color: var(--yellow-1);" class="swatch"></div>
-        <div style="background-color: var(--yellow-2);" class="swatch"></div>
-        <div style="background-color: var(--yellow-3);" class="swatch"></div>
-        <div style="background-color: var(--yellow-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--orange-1);" class="swatch"></div>
-        <div style="background-color: var(--orange-2);" class="swatch"></div>
-        <div style="background-color: var(--orange-3);" class="swatch"></div>
-        <div style="background-color: var(--orange-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--red-1);" class="swatch"></div>
-        <div style="background-color: var(--red-2);" class="swatch"></div>
-        <div style="background-color: var(--red-3);" class="swatch"></div>
-        <div style="background-color: var(--red-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--pink-1);" class="swatch"></div>
-        <div style="background-color: var(--pink-2);" class="swatch"></div>
-        <div style="background-color: var(--pink-3);" class="swatch"></div>
-        <div style="background-color: var(--pink-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--purple-1);" class="swatch"></div>
-        <div style="background-color: var(--purple-2);" class="swatch"></div>
-        <div style="background-color: var(--purple-3);" class="swatch"></div>
-        <div style="background-color: var(--purple-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--blue-1);" class="swatch"></div>
-        <div style="background-color: var(--blue-2);" class="swatch"></div>
-        <div style="background-color: var(--blue-3);" class="swatch"></div>
-        <div style="background-color: var(--blue-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--cyan-1);" class="swatch"></div>
-        <div style="background-color: var(--cyan-2);" class="swatch"></div>
-        <div style="background-color: var(--cyan-3);" class="swatch"></div>
-        <div style="background-color: var(--cyan-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--teal-1);" class="swatch"></div>
-        <div style="background-color: var(--teal-2);" class="swatch"></div>
-        <div style="background-color: var(--teal-3);" class="swatch"></div>
-        <div style="background-color: var(--teal-4);" class="swatch"></div>
-      </div>
-      <div style="display: flex;">
-        <div style="background-color: var(--green-1);" class="swatch"></div>
-        <div style="background-color: var(--green-2);" class="swatch"></div>
-        <div style="background-color: var(--green-3);" class="swatch"></div>
-        <div style="background-color: var(--green-4);" class="swatch"></div>
-      </div>
-    </div>
-    <button id="themes" class="p50 m100" style="width: 20ch" onclick="cyclePalette()">Colors
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM7.49988 1.82689C4.36688 1.8269 1.82707 4.36672 1.82707 7.49972C1.82707 10.6327 4.36688 13.1725 7.49988 13.1726V1.82689Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>
+    <swatch-viewer></swatch-viewer>
+    <button id="themes" class="p50 m100" style="width: 20ch">
+      Colors
+      <svg class="icon"><use href="/assets/icons.svg#i-colors"></use></svg>
+    </button>
     <div class="flex fill bt">
       <div class="br p100" style="width: 50%">
         <h1>Daily practice</h1>
@@ -94,8 +36,7 @@
           <li><a href="https://www.keybr.com/">keybr</a></li>
         </ul>
       </div>
-      
     </div>
-  </dimainv>
+  </main>
 </body>
 </html>

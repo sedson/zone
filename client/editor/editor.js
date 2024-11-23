@@ -3,7 +3,7 @@
  * @typedef {import("../../server/files").Note} Note
  */
 import { select, tag } from "../js/dom-utils.js";
-import { TextareaPlus } from "../components/text-editor/text-editor.js";
+import { TextareaPlus } from "../components/index.js";
 import { getFormattedDate, matchFormattedDate, prettyPrintDate } from "../js/dates.js";
 import { cyclePalette } from "../js/palette.js";
 import * as notesApi from "../js/notes-api.js";
@@ -38,12 +38,12 @@ function getSearchable(str) {
 
 async function hashChange() {
   const id = window.location.hash.slice(1);
-  
+
   if (id === "today") {
     window.location.hash = today;
     return;
   }
-  
+
   if (id) {
     let note = await notesApi.get(id);
     if (note === undefined) return;
@@ -53,7 +53,7 @@ async function hashChange() {
       if (id === today) {
         const created = await notesApi.create({ id: today });
         if (created) {
-          window.location.reload();  
+          window.location.reload();
         }
         return;
       }
@@ -68,7 +68,7 @@ async function hashChange() {
     editor.text = note.content ?? '';
     title.innerText = note.title || prettyPrintDate(note.id);
     if (note.id === today) {
-      title.append(tag('span.tag.today', { innerText: 'today' }));
+      title.append(tag("span.tag.today", { innerText: "today" }));
     }
     noteId = id;
 
@@ -89,7 +89,7 @@ async function hashChange() {
     buildMetaView();
 
     search.classList.add("hidden");
-    const searchInput = select("search-input");
+    const searchInput = /** @type {HTMLInputElement} */ (select("search-input"));
     if (searchInput && searchInput.value) {
       searchInput.value = "";
     }
@@ -97,9 +97,9 @@ async function hashChange() {
 }
 
 
-async function fillSidebar () {
+async function fillSidebar() {
   const daily = select("#daily");
-  
+
   for (let note of await notesApi.daily()) {
     let link = tag("a.note-link", {
       innerText: note.id,
@@ -110,7 +110,7 @@ async function fillSidebar () {
   }
 
   const named = select("#named-notes");
-  
+
   for (let note of await notesApi.named()) {
     let link = tag("a.note-link", {
       innerText: note.title || "[]",
@@ -122,7 +122,7 @@ async function fillSidebar () {
 
     if (note.id !== undefined && note.title !== undefined) {
       searchMap.set(note.id, getSearchable(note.title ?? ""));
-      globalNotes[note.id] = note.title;  
+      globalNotes[note.id] = note.title;
     }
   }
 }
@@ -135,7 +135,7 @@ editor.listen(editor.source, 'input', (e) => {
   buildMetaView();
 });
 
-editor.mapkey("meta+]", (e) => {  
+editor.mapkey("meta+]", (e) => {
   editor.indent();
 }, false);
 editor.mapkey("meta+[", (e) => {
@@ -147,7 +147,7 @@ editor.mapkey("meta+[", (e) => {
 select("#editor-title")?.addEventListener('input', (e) => {
   let title = e.target?.innerText ?? '';
   title = title.trim().replaceAll("\n", " ");
-  
+
   notesApi.update(noteId, { title });
 
   const sideBarElem = select(`[data-id=${noteId}`);
@@ -162,7 +162,7 @@ select("#editor-title")?.addEventListener('input', (e) => {
 
 async function newNote() {
   console.log('new')
-  
+
   const res = await fetch("/notes", {
     method: "POST",
     body: JSON.stringify({ title: 'New Note' })
@@ -188,8 +188,8 @@ function buildMetaView() {
   const linkArea = meta.querySelector("#meta-links");
   if (linkArea === null) return;
   linkArea.innerHTML = "";
-  
-  
+
+
   for (let [url, text] of Object.entries(editor.meta.links)) {
     const href = url.slice(1, -1);
     const external = (href.startsWith("http://") || href.startsWith("https://") || href.indexOf(".") > -1);
@@ -230,7 +230,8 @@ function buildSearchResults(str) {
 }
 
 select("#search-input")?.addEventListener("input", e => {
-  buildSearchResults(e.target.value);
+  let target = /** @type {HTMLInputElement} */ (e.target);
+  buildSearchResults(target.value);
 });
 
 window.addEventListener("keydown", async (e) => {
@@ -252,6 +253,10 @@ window.addEventListener("keydown", async (e) => {
   if (e.key === "m" && e.metaKey) {
     e.preventDefault();
     await newNote();
+  }
+  if (e.key === "e" && e.metaKey) {
+    editor.source.focus();
+    editor.setCarat(Infinity);
   }
   if ((e.key === "/" || e.key === "p") && e.metaKey) {
     search.classList.toggle("hidden");

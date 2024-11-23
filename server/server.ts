@@ -99,6 +99,7 @@ export async function server(config: ServerConfig): Promise<Server> {
 
         // DELETE /notes/:id
         if (method === "DELETE") {
+          console.log('delete', id);
           return json(await Files.delete(id) ?? {});
         }
       }
