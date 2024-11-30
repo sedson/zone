@@ -6,7 +6,7 @@ import config from "../zone-config.toml";
 
 const PORT = 8712;
 
-console.log(`http://localhost:${PORT}`);
+console.log(`[ ZONE running at http://localhost:${PORT} ]`);
 
 Bun.serve({
   port: PORT,

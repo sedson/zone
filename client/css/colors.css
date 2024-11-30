@@ -56,6 +56,7 @@
   --page:  #111;
   --gray-1: #ccc;
 }
+
 :root.scheme-mode {
   --page: #222022;
   --gray-1: #ccc;
@@ -67,6 +68,7 @@
   --blue-1: #65dfff;
   --green-1: hsl(from var(--cyan-1) calc(h - 80) calc(s + 10) calc(l - 10));
 }
+
 :root.scheme-quiet {
   --page: linen;
   --gray-1: #222;
@@ -80,6 +82,7 @@
   --teal-1: color-mix(in srgb, teal 50%, var(--gray-1) 50%);
   --cyan-1: color-mix(in srgb, cyan 20%, var(--gray-1) 80%);
 }
+
 :root.scheme-quiet-dark {
   --page: #222;
   --gray-1: #ccc;
@@ -93,6 +96,7 @@
   --teal-1: color-mix(in srgb, teal 35%, var(--gray-1) 65%);
   --cyan-1: color-mix(in srgb, cyan 20%, var(--gray-1) 80%);
 }
+
 :root.scheme-lake {
   --page: #1A2C34;
   --gray-1: #7AA8B7;
@@ -104,6 +108,7 @@
   --yellow-1: #FFEB66;
   --purple-1: #CBBB4D;
 }
+
 :root.scheme-pool {
   --page: #2A2433;
   --gray-1: color-mix(in srgb, #9A90A7, pink);

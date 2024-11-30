@@ -42,19 +42,6 @@ export function selectAll(selector) {
 }
 
 
-// /**
-//  * Create an element
-//  * @param {[type]} tag [description]
-//  * @param {[type]} props [description]
-//  * @param {[type]} children [description]
-//  * @return {[type]} [description]
-//  */
-// export function h(str, props, children) {
-//   const tag = string.split(/#|\./)[0].trim();
-//   const elem = document.createElement(tag);
-// }
-
-
 /**
  * Proxy for document.createElement with some extra utility for adding ids and 
  * classes.
